@@ -2,8 +2,9 @@ import React from "react";
 import Button from "../../components/Button";
 import MainTitle from "../../components/typography";
 import { childFlexScreen } from "../../config/mixClasses";
-import CheckboxGroup from "../../components/CheckboxGroup";
-import { findAllByDisplayValue } from "@testing-library/react";
+import CheckboxGroup from "../../components/ChooseGroup";
+import Input from "../../components/Input";
+import Textarea from "../../components/Textarea";
 
 const Text = ({ children }: any) => {
   return <p className={"text-lg font-normal mb-5"}>{children}</p>;
@@ -37,6 +38,32 @@ const Slide1 = ({ next, prev }: any) => {
 };
 
 const Slide2 = () => {
+  return (
+    <div>
+      <Title>(1/2) Расскажи немного о себе ⭐️</Title>
+      <div className="grid grid-cols-12 gap-2 mb-2">
+        <Input name="name" label="Имя" className="col-span-6" />
+        <Input name="lastName" label="Фамилия" className="col-span-6" />
+        <Input name="about" textarea label="О себе" className="col-span-12" />
+        <Input name="city" label="Город" className="col-span-8" />
+        <CheckboxGroup
+          className="col-span-4"
+          groupName={"request-tags"}
+          label={"Пол"}
+          noVerticalMargins
+          radio
+          options={[
+            { value: "male", content: "М" },
+            { value: "female", content: "Ж" },
+            { value: "unknown", content: "?" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+};
+
+const Slide3 = () => {
   const tags = [
     { content: "🤖 AI", value: "ai" },
     { content: "🧘‍♂️ Mental health", value: "mentalHealth" },
@@ -66,7 +93,7 @@ const Slide2 = () => {
   );
 };
 
-const Slide3 = () => {
+const Slide4 = () => {
   const titleStyle = "text-lg font-medium mb-2";
   const cardStyle = "w-80 px-2";
   const textStyle = "text-sm";
@@ -102,7 +129,7 @@ const Slide3 = () => {
     </div>
   );
 };
-const Slide4 = () => {
+const Slide5 = () => {
   const tags = [
     { content: "🤖 AI", value: "ai" },
     { content: "🧘‍♂️ Mental health", value: "mentalHealth" },
@@ -117,4 +144,4 @@ const Slide4 = () => {
   );
 };
 
-export { Slide1, Slide2, Slide3, Slide4 };
+export { Slide1, Slide2, Slide3, Slide4, Slide5 };
