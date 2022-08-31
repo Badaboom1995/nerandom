@@ -5,11 +5,12 @@ type Slide = {
   component: any;
   goBack?: () => void;
   goForward?: () => void;
-  useCustomControls?: boolean;
+  hideDefaultControls?: boolean;
+  props?: Record<string, any> | null;
 };
 
 interface IStepper {
-  slides: any[];
+  slides: Slide[];
 }
 
 const Stepper = ({ slides }: IStepper) => {
@@ -18,6 +19,7 @@ const Stepper = ({ slides }: IStepper) => {
 
   useEffect(() => {
     setSlide(slides[stepNumber]);
+    window.scrollTo(0, 0);
   }, [stepNumber]);
 
   const nextStep = () => {
@@ -35,8 +37,14 @@ const Stepper = ({ slides }: IStepper) => {
 
   return (
     <div className={"flex flex-col grow"}>
-      <div className="flex-grow">
-        {CurrentSlide && <CurrentSlide.component next={nextStep} />}
+      <div className="flex-grow flex flex-col">
+        {CurrentSlide && (
+          <CurrentSlide.component
+            next={nextStep}
+            prev={prevStep}
+            data={CurrentSlide.props}
+          />
+        )}
       </div>
       {!CurrentSlide?.hideDefaultControls && (
         <div className="flex justify-between">
