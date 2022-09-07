@@ -28,7 +28,8 @@ const NetworkingOnboarding = () => {
 
   useEffect(() => {
     const wind: any = window;
-    console.log(wind.Telegram?.WebApp);
+    const user = wind.Telegram?.WebApp.initDataUnsafe.user;
+    console.log(user.username, user.first_name, user.last_name, user.photo_url);
     console.log("halo");
 
     findMatch();
