@@ -9,9 +9,7 @@ function App() {
   const [user, setUser] = useState("vasya");
 
   useEffect(() => {
-    const wind: any = window;
-    console.log(wind.Telegram?.WebApp);
-    console.log("halo");
+    console.log("");
   }, []);
 
   return (

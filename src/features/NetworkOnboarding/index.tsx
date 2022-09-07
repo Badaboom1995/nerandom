@@ -27,6 +27,10 @@ const NetworkingOnboarding = () => {
   };
 
   useEffect(() => {
+    // const wind: any = window;
+    // console.log(wind.Telegram?.WebApp);
+    console.log("halo");
+
     findMatch();
     const getAreas = makeRequest.get("Areas?&view=Grid%20view");
     const getSkills = makeRequest.get("Skills?&view=Grid%20view");
