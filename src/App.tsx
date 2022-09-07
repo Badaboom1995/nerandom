@@ -11,6 +11,7 @@ function App() {
   useEffect(() => {
     const wind: any = window;
     console.log(wind.Telegram?.WebApp);
+    console.log("halo");
   }, []);
 
   return (
