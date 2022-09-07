@@ -17,7 +17,7 @@ const Input = ({
   value?: string;
 }) => {
   const styles =
-    " hover:outline-none focus:outline-none cursor-pointer p-2 m-1 bg-gray-50 rounded-lg border border-gray-200 inline-block box-border";
+    "hover:outline-none focus:outline-none cursor-pointer p-2 m-1 bg-gray-50 rounded-lg border border-gray-200 inline-block box-border";
   const [field, meta, helpers] = useField(name);
 
   return (
