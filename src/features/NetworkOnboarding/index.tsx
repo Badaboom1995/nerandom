@@ -68,7 +68,7 @@ const NetworkingOnboarding = () => {
 
   return (
     <div className={childFlexScreen}>
-      {user ? (
+      {user && areas && skills && occupation ? (
         <Formik
           onSubmit={(results) => {
             console.log(results);
