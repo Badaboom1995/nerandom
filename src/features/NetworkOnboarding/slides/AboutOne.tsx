@@ -4,14 +4,12 @@ import React from "react";
 import { Title } from "../components";
 
 const AboutOne = ({ data }: any) => {
-  console.log(data);
   return (
     <div>
-      <Title>(1/3) Расскажи немного о себе ⭐️</Title>
+      <Title>(1/4) Расскажи немного о себе ⭐️</Title>
       <div className="grid grid-cols-12 gap-2 mb-2">
         <Input name="name" label="Имя" className="col-span-6" />
         <Input name="lastName" label="Фамилия" className="col-span-6" />
-        <button type={"submit"}>bup</button>
         <Input
           name="about"
           textarea

@@ -12,6 +12,7 @@ import LastCall from "./slides/LastCall";
 import Final from "./slides/Final";
 import makeRequest from "../../helpers/makeRequest";
 import { unwrapAirtable } from "../../helpers/unwrap";
+import findMatch from "../../helpers/findMatch";
 
 const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
@@ -26,19 +27,22 @@ const NetworkingOnboarding = () => {
   };
 
   useEffect(() => {
+    findMatch();
     const getAreas = makeRequest.get("Areas?&view=Grid%20view");
     const getSkills = makeRequest.get("Skills?&view=Grid%20view");
-    const getOccupations = makeRequest.get("Occupation?&view=Grid%20view");
+    const getOccupations = makeRequest.get("Occupation");
+    const sortByAlphabet = (items: any) =>
+      items.sort((prev: any, next: any) => (prev.name > next.name ? 1 : -1));
     Promise.all([getAreas, getSkills, getOccupations]).then(function (values) {
       values.forEach((item, index) => {
         if (index === 0) {
-          setAreas(unwrapAirtable(item));
+          setAreas(sortByAlphabet(unwrapAirtable(item)));
         }
         if (index === 1) {
-          setSkills(unwrapAirtable(item));
+          setSkills(sortByAlphabet(unwrapAirtable(item)));
         }
         if (index === 2) {
-          setOccupation(unwrapAirtable(item));
+          setOccupation(sortByAlphabet(unwrapAirtable(item)));
         }
       });
     });
@@ -81,7 +85,10 @@ const NetworkingOnboarding = () => {
                 {
                   component: LastCall,
                   hideDefaultControls: true,
-                  props: props.values,
+                  props: {
+                    values: props.values,
+                    dicts: { areas, skills, occupation },
+                  },
                 },
                 {
                   component: Final,

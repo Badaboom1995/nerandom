@@ -15,16 +15,23 @@ const Request = ({ data }: any) => {
   ];
   return (
     <div>
-      <Title> (3/3) Сформируй запрос 🎯</Title>
+      <Title> (3/4) Сформируй запрос 🎯</Title>
       <CheckboxGroup
-        groupName={"goal"}
+        groupName={"goals"}
         label={<BigTitle>Цель нетворкинга?</BigTitle>}
         options={target}
       />
       <CheckboxGroup
-        groupName={"skills"}
+        groupName={"requestSkills"}
         label={<BigTitle>На какие темы интересно пообщаться?</BigTitle>}
-        options={[...data.skills, ...data.areas]}
+        options={data.skills}
+        maxItems={10}
+      />
+      <CheckboxGroup
+        groupName={"requestAreas"}
+        label={<BigTitle>Какие области релевантны?</BigTitle>}
+        options={data.areas}
+        maxItems={10}
       />
       {/*<CheckboxGroup*/}
       {/*  groupName={"areas"}*/}

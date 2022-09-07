@@ -26,8 +26,8 @@ const NavItem = ({ item }: any) => {
 const Navigation = () => {
   return (
     <div className="flex w-full justify-between py-5 px-5 border-t-2 border-zync-600">
-      {navItems.map((obj) => {
-        return <NavItem item={obj} />;
+      {navItems.map((obj, index) => {
+        return <NavItem item={obj} key={index} />;
       })}
     </div>
   );

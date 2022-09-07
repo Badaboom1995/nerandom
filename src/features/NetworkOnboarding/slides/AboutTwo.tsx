@@ -3,22 +3,22 @@ import React from "react";
 import { Title } from "../components";
 
 const BigTitle = ({ children }: any) => {
-  return <h2 className={"font-lg"}>{children}</h2>;
+  return <h2 className={"text-lg"}>{children}</h2>;
 };
 
 const AboutTwo = ({ data }: any) => {
   return (
     <div>
-      <Title>(2/3) Расскажи немного о себе ⭐️</Title>
+      <Title>(2/4) Расскажи немного о себе ⭐️</Title>
       <CheckboxGroup
         groupName={"skills"}
-        label={<BigTitle>- Чем можешь быть полезен?</BigTitle>}
+        label={<BigTitle>Чем можешь быть полезен?</BigTitle>}
         options={data.skills}
         maxItems={8}
       />
       <CheckboxGroup
         groupName={"areas"}
-        label={<BigTitle>- В каких отраслях есть опыт?</BigTitle>}
+        label={<BigTitle>В каких отраслях есть опыт?</BigTitle>}
         options={data.areas}
         maxItems={8}
       />

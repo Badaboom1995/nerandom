@@ -5,7 +5,7 @@ import Button from "../Button";
 
 const ChooseGroup = ({
   groupName,
-  options,
+  options = [],
   className,
   label,
   noVerticalMargins,
@@ -40,19 +40,7 @@ const ChooseGroup = ({
     const firstItems = maxItems ? options?.splice(0, maxItems) : options;
     setFirstItems(firstItems);
   }, []);
-  useEffect(() => {
-    console.log(chosenIds);
-  }, [chosenIds]);
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
+
   return (
     <div className={`flex flex-wrap mb-2 ${className}`}>
       <Modal
@@ -60,15 +48,6 @@ const ChooseGroup = ({
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <div
-          className={
-            "shadow fixed bottom-5 left-0 w-full p-3 bg-white border-t-2 border-slate-100"
-          }
-        >
-          <Button className={" w-3/4 mx-auto block"} onClick={closeModal}>
-            Готово
-          </Button>
-        </div>
         <div className={"overflow-scroll h-screen pb-20"}>
           {options?.map((item) => (
             <Choose
@@ -82,6 +61,15 @@ const ChooseGroup = ({
               onChoose={onChoose}
             />
           ))}
+        </div>
+        <div
+          className={
+            "shadow fixed bottom-10 left-0 w-full p-3 bg-white border-t-2 border-slate-100"
+          }
+        >
+          <Button className={" w-3/4 mx-auto block"} onClick={closeModal}>
+            Готово
+          </Button>
         </div>
       </Modal>
       <label className={`font-medium text-md pl-3 mb-2 w-full`}>{label}</label>
