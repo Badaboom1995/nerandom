@@ -11,12 +11,12 @@ const Title = ({ children }: any) => (
   <MainTitle className={"border-b  mb-10 pb-10"}>{children}</MainTitle>
 );
 
-const Hello = ({ next, prev }: any) => {
+const Hello = ({ next, prev, user }: any) => {
   return (
     <div className={childFlexScreen}>
       <div className="text-center max-w-md grow">
         <MainTitle>
-          Привет! Это новый раздел{" "}
+          Привет {user?.first_name}! Это новый раздел{" "}
           <span className="text-orange-500">NeRandomCoffee</span>
         </MainTitle>
         <Text className={"text-lg mb-10"}>

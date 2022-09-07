@@ -24,9 +24,9 @@ const MainLayout = ({ Header, Nav, children }: LayoutProps) => {
     <div className="flex flex-col h-screen">
       <HeaderArea>{/*<Header />*/}</HeaderArea>
       <MainArea>{children}</MainArea>
-      <NavArea>
-        <Nav />
-      </NavArea>
+      {/*<NavArea>*/}
+      {/*  <Nav />*/}
+      {/*</NavArea>*/}
     </div>
   );
 };

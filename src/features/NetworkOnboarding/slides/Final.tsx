@@ -1,5 +1,5 @@
 import MainTitle from "../../../components/typography";
-import React from "react";
+import React, { useEffect } from "react";
 import cup from "../../../assets/cup.svg";
 import asian from "../../../assets/asian.svg";
 import Button from "../../../components/Button";
@@ -9,7 +9,9 @@ const Final = ({ next, prev }: any) => {
   const myCanvas = document.createElement("canvas");
   const wrapper = document.querySelector("#confetiWrapper");
   wrapper?.appendChild(myCanvas);
-
+  useEffect(() => {
+    localStorage.setItem("isOnboardingDone", "true");
+  }, []);
   confetti({
     particleCount: 200,
     spread: 100,
@@ -26,9 +28,9 @@ const Final = ({ next, prev }: any) => {
         <p className={"mb-5 text-md font-medium w-full"}>
           Скоро мы подберем для тебя собеседника и пришлем его анкету.
         </p>
-        <p className={"mb-5 text-md font-medium w-full"}>
-          Оповещение будет в боте. Не пропусти
-        </p>
+        {/*<p className={"mb-5 text-md font-medium w-full"}>*/}
+        {/*  Оповещение придет бота @hegai.hub в следующий вторник.*/}
+        {/*</p>*/}
         <p
           className={
             "relative p-8 pl-20 text-md font-medium bg-slate-200 mb-10 rounded-lg"
@@ -37,10 +39,10 @@ const Final = ({ next, prev }: any) => {
           <img src={asian} alt="" className={"absolute left-1 top-3 w-20"} />
           Но если совсем не терпится можем найти кого-нибудь прямо сейчас :)
         </p>
-        <Button type={"submit"} className={"mb-3"}>
-          Искать сейчас
-        </Button>
-        <button className={"text-sm underline"}>Пропустить</button>
+        {/*<Button type={"submit"} className={"mb-3"}>*/}
+        {/*  Искать сейчас*/}
+        {/*</Button>*/}
+        {/*<button className={"text-sm underline"}>Пропустить</button>*/}
       </div>
     </div>
   );
