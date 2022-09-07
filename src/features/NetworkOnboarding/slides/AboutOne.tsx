@@ -8,8 +8,25 @@ const AboutOne = ({ data }: any) => {
     <div>
       <Title>(1/4) Расскажи немного о себе ⭐️</Title>
       <div className="grid grid-cols-12 gap-2 mb-2">
-        <Input name="name" label="Имя" className="col-span-6" />
-        <Input name="lastName" label="Фамилия" className="col-span-6" />
+        <Input
+          name="name"
+          label="Имя"
+          className="col-span-6"
+          value={data.user?.first_name || ""}
+        />
+        <Input
+          name="lastName"
+          label="Фамилия"
+          className="col-span-6"
+          value={data.user?.last_name || ""}
+        />
+        <Input
+          name="telegram_nickname"
+          placeholder={"@yournickname"}
+          label="Телеграм"
+          className="col-span-12"
+          value={data.user?.username || ""}
+        />
         <Input
           name="about"
           textarea

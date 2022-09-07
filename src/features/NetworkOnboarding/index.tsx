@@ -18,6 +18,7 @@ const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
   const [skills, setSkills]: any = useState(null);
   const [occupation, setOccupation]: any = useState(null);
+  const [user, setUser]: any = useState(null);
 
   const getChooseData = (item: any) => {
     return item?.map((item: any) => ({
@@ -29,8 +30,18 @@ const NetworkingOnboarding = () => {
   useEffect(() => {
     const wind: any = window;
     const user = wind.Telegram?.WebApp.initDataUnsafe.user;
-    console.log(user.username, user.first_name, user.last_name, user.photo_url);
-    console.log("halo");
+    setUser({
+      username: user?.username,
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      photo_url: user?.photo_url,
+    });
+    console.log(
+      user?.username,
+      user?.first_name,
+      user?.last_name,
+      user?.photo_url
+    );
 
     findMatch();
     const getAreas = makeRequest.get("Areas?&view=Grid%20view");
@@ -71,6 +82,7 @@ const NetworkingOnboarding = () => {
                   props: {
                     occupation: getChooseData(occupation),
                     choosedOccupationIds: props.values,
+                    user,
                   },
                 },
                 {

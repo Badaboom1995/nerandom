@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Auth from "../features/Auth";
-import Navigation from "../components/Navigation";
+import Navigation from "../features/Navigation";
 import MainLayout from "../layouts/MainLayout";
 import MainHeader from "../components/MainHeader";
 import Networking from "../pages/Networking";

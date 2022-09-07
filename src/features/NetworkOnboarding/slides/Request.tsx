@@ -1,7 +1,6 @@
 import CheckboxGroup from "../../../components/ChooseGroup";
 import React from "react";
 import { Title } from "../components";
-import { areas } from "../data";
 const BigTitle = ({ children }: any) => {
   return <h2 className={"text-lg"}>{children}</h2>;
 };

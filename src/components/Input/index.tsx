@@ -7,12 +7,14 @@ const Input = ({
   label,
   textarea,
   placeholder,
+  value,
 }: {
   name: string;
   label: any;
   className?: string;
   textarea?: boolean;
   placeholder?: string;
+  value?: string;
 }) => {
   const styles =
     " hover:outline-none focus:outline-none cursor-pointer p-2 m-1 bg-gray-50 rounded-lg border border-gray-200 inline-block box-border";
@@ -25,6 +27,7 @@ const Input = ({
           name={name}
           rows={4}
           cols={12}
+          value={value}
           className={styles}
           placeholder={placeholder}
         />
@@ -32,6 +35,7 @@ const Input = ({
         <Field
           as={"input"}
           name={name}
+          value={value}
           className={styles}
           placeholder={placeholder}
         />

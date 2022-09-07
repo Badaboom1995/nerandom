@@ -17,7 +17,7 @@ const navItems = [
 const NavItem = ({ item }: any) => {
   return (
     <NavLink className="text-xs flex flex-col items-center" to={item.to}>
-      <img className="w-5 mb-1" src={item.url} />
+      <img className="w-7 mb-1" src={item.url} />
       <p>{item.name}</p>
     </NavLink>
   );
