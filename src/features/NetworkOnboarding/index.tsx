@@ -29,7 +29,9 @@ const NetworkingOnboarding = () => {
 
   useEffect(() => {
     const wind: any = window;
-    const user = wind.Telegram?.WebApp.initDataUnsafe.user;
+    const telegramData = wind.Telegram?.WebApp.initDataUnsafe;
+    const user = telegramData?.user;
+    telegramData?.expand && telegramData?.expand();
     setUser({
       username: user?.username,
       first_name: user?.first_name,
@@ -43,7 +45,7 @@ const NetworkingOnboarding = () => {
       user?.photo_url
     );
 
-    findMatch();
+    // findMatch();
     const getAreas = makeRequest.get("Areas?&view=Grid%20view");
     const getSkills = makeRequest.get("Skills?&view=Grid%20view");
     const getOccupations = makeRequest.get("Occupation");
@@ -70,7 +72,11 @@ const NetworkingOnboarding = () => {
         onSubmit={(results) => {
           console.log(results);
         }}
-        initialValues={{}}
+        initialValues={{
+          name: user?.first_name,
+          lastname: user?.last_name,
+          telegram_nickname: user?.username,
+        }}
       >
         {(props) => (
           <Form className={"flex flex-col grow"}>

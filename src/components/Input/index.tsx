@@ -27,7 +27,6 @@ const Input = ({
           name={name}
           rows={4}
           cols={12}
-          value={value}
           className={styles}
           placeholder={placeholder}
         />
@@ -35,7 +34,6 @@ const Input = ({
         <Field
           as={"input"}
           name={name}
-          value={value}
           className={styles}
           placeholder={placeholder}
         />
