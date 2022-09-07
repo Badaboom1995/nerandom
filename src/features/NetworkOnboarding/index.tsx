@@ -71,6 +71,7 @@ const NetworkingOnboarding = () => {
       <Formik
         onSubmit={(results) => {
           console.log(results);
+          console.log(results);
         }}
         initialValues={{
           name: user?.first_name,
