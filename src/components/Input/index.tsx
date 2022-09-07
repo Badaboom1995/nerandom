@@ -18,7 +18,7 @@ const Input = ({
 }) => {
   const styles =
     "hover:outline-none focus:outline-none cursor-pointer p-2 m-1 bg-gray-50 rounded-lg border border-gray-200 inline-block box-border";
-  const [field, meta, helpers] = useField(name);
+  const [meta] = useField(name);
 
   return (
     <div className={`flex flex-col ${className}`}>

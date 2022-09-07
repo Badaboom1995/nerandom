@@ -68,65 +68,68 @@ const NetworkingOnboarding = () => {
 
   return (
     <div className={childFlexScreen}>
-      <Formik
-        onSubmit={(results) => {
-          console.log(results);
-          console.log(results);
-        }}
-        initialValues={{
-          name: user?.first_name,
-          lastName: user?.last_name,
-          telegram_nickname: user?.username,
-        }}
-      >
-        {(props) => (
-          <Form className={"flex flex-col grow"}>
-            <Stepper
-              slides={[
-                {
-                  component: Hello,
-                  hideDefaultControls: true,
-                  props: { user },
-                },
-                {
-                  component: AboutOne,
-                  props: {
-                    occupation: getChooseData(occupation),
-                    choosedOccupationIds: props.values,
-                    user,
+      {user ? (
+        <Formik
+          onSubmit={(results) => {
+            console.log(results);
+          }}
+          initialValues={{
+            name: user?.first_name,
+            lastName: user?.last_name,
+            telegram_nickname: user?.username,
+          }}
+        >
+          {(props) => (
+            <Form className={"flex flex-col grow"}>
+              <Stepper
+                slides={[
+                  {
+                    component: Hello,
+                    hideDefaultControls: true,
+                    props: { user },
                   },
-                },
-                {
-                  component: AboutTwo,
-                  props: {
-                    areas: getChooseData(areas),
-                    skills: getChooseData(skills),
+                  {
+                    component: AboutOne,
+                    props: {
+                      occupation: getChooseData(occupation),
+                      choosedOccupationIds: props.values,
+                      user,
+                    },
                   },
-                },
-                {
-                  component: Request,
-                  props: {
-                    areas: getChooseData(areas),
-                    skills: getChooseData(skills),
+                  {
+                    component: AboutTwo,
+                    props: {
+                      areas: getChooseData(areas),
+                      skills: getChooseData(skills),
+                    },
                   },
-                },
-                {
-                  component: LastCall,
-                  hideDefaultControls: true,
-                  props: {
-                    values: props.values,
-                    dicts: { areas, skills, occupation },
+                  {
+                    component: Request,
+                    props: {
+                      areas: getChooseData(areas),
+                      skills: getChooseData(skills),
+                    },
                   },
-                },
-                {
-                  component: Final,
-                  hideDefaultControls: true,
-                },
-              ]}
-            />
-          </Form>
-        )}
-      </Formik>
+                  {
+                    component: LastCall,
+                    hideDefaultControls: true,
+                    props: {
+                      values: props.values,
+                      dicts: { areas, skills, occupation },
+                    },
+                  },
+                  {
+                    component: Final,
+                    hideDefaultControls: true,
+                  },
+                ]}
+              />
+            </Form>
+          )}
+        </Formik>
+      ) : (
+        "loading"
+      )}
     </div>
   );
 };
