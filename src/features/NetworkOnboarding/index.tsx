@@ -33,7 +33,7 @@ const NetworkingOnboarding = () => {
     const user = telegramData?.user;
     telegramData?.expand && telegramData?.expand();
     setUser({
-      username: `@${user?.username}`,
+      username: user?.username ? `@${user?.username}` : "",
       first_name: user?.first_name,
       last_name: user?.last_name,
       photo_url: user?.photo_url,
@@ -61,7 +61,9 @@ const NetworkingOnboarding = () => {
 
   return (
     <div className={`${childFlexScreen} relative`}>
-      {user && areas && skills && occupation ? (
+      {localStorage.getItem("hegai_dataSended") === "yes" ? (
+        <Final />
+      ) : user && areas && skills && occupation ? (
         <Formik
           onSubmit={(results) => {
             console.log(results);

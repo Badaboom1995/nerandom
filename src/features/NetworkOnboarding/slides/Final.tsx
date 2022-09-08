@@ -10,12 +10,15 @@ const Final = ({ next, prev }: any) => {
   useEffect(() => {
     localStorage.setItem("isOnboardingDone", "true");
   }, []);
-  confetti({
-    particleCount: 200,
-    spread: 100,
+  if (localStorage.getItem("hegai_dataSended") !== "yes") {
+    confetti({
+      particleCount: 200,
+      spread: 100,
 
-    origin: { y: 0.4 },
-  });
+      origin: { y: 0.4 },
+    });
+  }
+
   return (
     <div>
       <MainTitle className={"my-10 text-center text-orange-500"}>

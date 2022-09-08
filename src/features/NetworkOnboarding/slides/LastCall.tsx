@@ -30,6 +30,7 @@ const LastCall = ({ next, prev, data }: any) => {
       .post("Users", { records: [{ fields: data.values }] })
       .then(() => {
         next();
+        localStorage.setItem("hegai_dataSended", "yes");
       })
       .catch((e) => {
         toast.error(e.response.statusText);
