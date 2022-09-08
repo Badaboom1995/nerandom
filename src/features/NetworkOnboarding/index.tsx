@@ -12,7 +12,7 @@ import LastCall from "./slides/LastCall";
 import Final from "./slides/Final";
 import makeRequest from "../../helpers/makeRequest";
 import { unwrapAirtable } from "../../helpers/unwrap";
-import findMatch from "../../helpers/findMatch";
+import Loader from "../../components/Loader";
 
 const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
@@ -33,18 +33,11 @@ const NetworkingOnboarding = () => {
     const user = telegramData?.user;
     telegramData?.expand && telegramData?.expand();
     setUser({
-      username: user?.username,
+      username: `@${user?.username}`,
       first_name: user?.first_name,
       last_name: user?.last_name,
       photo_url: user?.photo_url,
     });
-    console.log(
-      user?.username,
-      user?.first_name,
-      user?.last_name,
-      user?.photo_url
-    );
-
     // findMatch();
     const getAreas = makeRequest.get("Areas?&view=Grid%20view");
     const getSkills = makeRequest.get("Skills?&view=Grid%20view");
@@ -67,7 +60,7 @@ const NetworkingOnboarding = () => {
   }, []);
 
   return (
-    <div className={childFlexScreen}>
+    <div className={`${childFlexScreen} relative`}>
       {user && areas && skills && occupation ? (
         <Formik
           onSubmit={(results) => {
@@ -128,7 +121,7 @@ const NetworkingOnboarding = () => {
           )}
         </Formik>
       ) : (
-        "loading"
+        <Loader />
       )}
     </div>
   );

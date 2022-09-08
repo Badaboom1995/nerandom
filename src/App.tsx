@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AppRouter, { NonUserRouter } from "./router";
 import Modal from "react-modal";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 Modal.setAppElement("#root");
 
@@ -14,6 +16,7 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer />
       {isLoading && <div>loading...</div>}
       {user ? <AppRouter /> : <NonUserRouter />}
       <div

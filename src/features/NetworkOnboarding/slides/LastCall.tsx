@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import { Title } from "../components";
 import Input from "../../../components/Input";
 import ChooseGroup from "../../../components/ChooseGroup";
 import makeRequest from "../../../helpers/makeRequest";
+import { toast } from "react-toastify";
 
+// todo move to formik submit level
 const LastCall = ({ next, prev, data }: any) => {
   const idsToObjects = (name: any) =>
     data?.values[name]?.map((item: any) => {
@@ -13,7 +15,7 @@ const LastCall = ({ next, prev, data }: any) => {
       );
       return { content: curr.name, value: curr.id };
     });
-
+  const [isLoading, setLoading] = useState(false);
   const filteredAreas = idsToObjects("areas");
   const filteredSkills = idsToObjects("skills");
   const filteredOcupations = idsToObjects("occupation");
@@ -23,7 +25,18 @@ const LastCall = ({ next, prev, data }: any) => {
   }, [data]);
 
   const sendData = () => {
-    makeRequest.post("Users", { records: [{ fields: data.values }] });
+    setLoading(true);
+    makeRequest
+      .post("Users", { records: [{ fields: data.values }] })
+      .then(() => {
+        next();
+      })
+      .catch((e) => {
+        toast.error(e.response.statusText);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -68,11 +81,11 @@ const LastCall = ({ next, prev, data }: any) => {
       </div>
       <div className={"text-center"}>
         <Button
+          loading={isLoading}
           type={"submit"}
           className={"mb-3"}
           onClick={() => {
             sendData();
-            next();
           }}
         >
           Создать анкету
