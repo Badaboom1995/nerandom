@@ -30,7 +30,7 @@ const NetworkingOnboarding = () => {
 
   useEffect(() => {
     const wind: any = window;
-    const telegramData = wind.Telegram?.WebApp.initDataUnsafe;
+    const telegramData = wind.Telegram?.WebApp;
     const user = telegramData?.user;
     if (telegramData?.expand) {
       telegramData?.expand();

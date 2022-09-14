@@ -48,8 +48,8 @@ const Final = ({ next, prev }: any) => {
             to={"/networking"}
             onClick={() => {
               const wind: any = window;
-              if (wind.Telegram?.WebApp.initDataUnsafe?.close) {
-                wind.Telegram?.WebApp.initDataUnsafe?.close();
+              if (wind.Telegram?.WebApp.close) {
+                wind.Telegram?.WebApp.close();
               }
             }}
           >
