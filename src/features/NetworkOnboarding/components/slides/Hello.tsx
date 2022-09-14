@@ -19,17 +19,13 @@ const Hello = ({ next, prev, user }: any) => {
           Привет {user?.first_name}! Это новый раздел{" "}
           <span className="text-orange-500">NeRandomCoffee</span>
         </MainTitle>
-        <Text className={"text-lg mb-10"}>
-          Заполни анкету и наши умные алгоритмы подберут для тебя идеальный
-          метч!
-        </Text>
         <Text className={"text-lg"}>
-          Нажми <b>“Готов”</b> чтобы твоя анкета появилась в базе и мы подберем
-          тебе собеседника
+          Заполни анкету и мы подберем интересных людей для общения по твоему
+          запросу
         </Text>
       </div>
       <Button className="my-10" onClick={next}>
-        Готов
+        Начать
       </Button>
     </div>
   );
