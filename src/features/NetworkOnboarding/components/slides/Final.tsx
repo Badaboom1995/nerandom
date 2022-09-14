@@ -26,7 +26,7 @@ const Final = ({ next, prev }: any) => {
   return (
     <div>
       <MainTitle className={"my-10 text-center text-orange-500"}>
-        Анекта создана!
+        Анкета создана!
       </MainTitle>
       <div className={"flex flex-col items-center text-center"}>
         <img className={"w-20 mb-10"} src={cup} alt="" />
@@ -43,18 +43,17 @@ const Final = ({ next, prev }: any) => {
         >
           Будет тиндер формат с очень классными ребятами, не пропусти :)
         </p>
-        <Button type={"submit"} className={"mb-3"}>
-          <Link
-            to={"/networking"}
-            onClick={() => {
-              const wind: any = window;
-              if (wind.Telegram?.WebApp.close) {
-                wind.Telegram?.WebApp.close();
-              }
-            }}
-          >
-            Завершить
-          </Link>
+        <Button
+          type={"submit"}
+          className={"mb-3"}
+          onClick={() => {
+            const wind: any = window;
+            if (wind.Telegram?.WebApp.close) {
+              wind.Telegram?.WebApp.close();
+            }
+          }}
+        >
+          <Link to={"/networking"}>Завершить</Link>
         </Button>
       </div>
     </div>

@@ -41,9 +41,13 @@ const NetworkingOnboarding = () => {
       last_name: user?.last_name,
       photo_url: user?.photo_url,
     });
-    // findMatch();
-    const getAreas = makeRequest.get("Areas?&view=Grid%20view");
-    const getSkills = makeRequest.get("Skills?&view=Grid%20view");
+
+    const getAreas = makeRequest.get(
+      "Areas?&filterByFormula=Search('1', {level})"
+    );
+    const getSkills = makeRequest.get(
+      "Skills?&filterByFormula=Search('1', {level})"
+    );
     const getOccupations = makeRequest.get("Occupation");
     const sortByAlphabet = (items: any) =>
       items.sort((prev: any, next: any) => (prev.name > next.name ? 1 : -1));

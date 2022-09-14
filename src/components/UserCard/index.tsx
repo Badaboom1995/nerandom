@@ -14,10 +14,6 @@ import {
   Container,
 } from "./styled";
 
-// const config = [["Header", "bg-white radius-10 shadow"]];
-// const [Header, HeaderInfo, Name, Occupation, Telegram, Tags, TagItem] =
-//   getStyled(config);
-
 const UserCard = () => {
   return (
     <Container>
