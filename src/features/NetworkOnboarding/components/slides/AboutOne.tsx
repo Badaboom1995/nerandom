@@ -1,7 +1,7 @@
-import Input from "../../../components/Input";
-import CheckboxGroup from "../../../components/ChooseGroup";
+import Input from "../../../../components/Input";
+import CheckboxGroup from "../../../../components/ChooseGroup";
 import React from "react";
-import { Title } from "../components";
+import { Title } from "../../components";
 
 const AboutOne = ({ data }: any) => {
   return (

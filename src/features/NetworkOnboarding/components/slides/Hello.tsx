@@ -1,6 +1,6 @@
-import { childFlexScreen } from "../../../config/mixClasses";
-import MainTitle from "../../../components/typography";
-import Button from "../../../components/Button";
+import { childFlexScreen } from "../../../../config/mixClasses";
+import MainTitle from "../../../../components/typography";
+import Button from "../../../../components/Button";
 import React from "react";
 import confetti from "canvas-confetti";
 

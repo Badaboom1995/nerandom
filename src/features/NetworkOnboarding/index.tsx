@@ -4,15 +4,16 @@ import Stepper from "../../components/Stepper";
 import { Formik, Form } from "formik";
 
 import { childFlexScreen } from "../../config/mixClasses";
-import Hello from "./slides/Hello";
-import AboutOne from "./slides/AboutOne";
-import AboutTwo from "./slides/AboutTwo";
-import Request from "./slides/Request";
-import LastCall from "./slides/LastCall";
-import Final from "./slides/Final";
+import Hello from "./components/slides/Hello";
+import AboutOne from "./components/slides/AboutOne";
+import AboutTwo from "./components/slides/AboutTwo";
+import Request from "./components/slides/Request";
+import LastCall from "./components/slides/LastCall";
+import Final from "./components/slides/Final";
 import makeRequest from "../../helpers/makeRequest";
 import { unwrapAirtable } from "../../helpers/unwrap";
 import Loader from "../../components/Loader";
+import Matching from "./components/Matching";
 
 const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
@@ -31,7 +32,9 @@ const NetworkingOnboarding = () => {
     const wind: any = window;
     const telegramData = wind.Telegram?.WebApp.initDataUnsafe;
     const user = telegramData?.user;
-    telegramData?.expand && telegramData?.expand();
+    if (telegramData?.expand) {
+      telegramData?.expand();
+    }
     setUser({
       username: user?.username ? `@${user?.username}` : "",
       first_name: user?.first_name,

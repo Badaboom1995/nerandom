@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Field } from "formik";
+import getRandomColor from "../../helpers/getRandomColor";
 
 const Choose = ({
   id,
@@ -18,20 +19,7 @@ const Choose = ({
   radio?: boolean;
   onChoose: (p: any) => void;
 }) => {
-  const colors = [
-    "red",
-    "orange",
-    "lime",
-    "green",
-    "teal",
-    "cyan",
-    "blue",
-    "violet",
-    "pink",
-  ];
   const [color, setColor] = useState("");
-  const getRandomColor = () =>
-    colors[Math.floor(Math.random() * colors.length)];
 
   useEffect(() => {
     setColor(getRandomColor());

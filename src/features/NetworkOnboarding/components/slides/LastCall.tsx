@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Button from "../../../components/Button";
-import { Title } from "../components";
-import Input from "../../../components/Input";
-import ChooseGroup from "../../../components/ChooseGroup";
-import makeRequest from "../../../helpers/makeRequest";
+import Button from "../../../../components/Button";
+import { Title } from "../../components";
+import Input from "../../../../components/Input";
+import ChooseGroup from "../../../../components/ChooseGroup";
+import makeRequest from "../../../../helpers/makeRequest";
 import { toast } from "react-toastify";
 
 // todo move to formik submit level
@@ -30,7 +30,6 @@ const LastCall = ({ next, prev, data }: any) => {
       .post("Users", { records: [{ fields: data.values }] })
       .then(() => {
         next();
-        localStorage.setItem("hegai_dataSended", "yes");
       })
       .catch((e) => {
         toast.error(e.response.statusText);
