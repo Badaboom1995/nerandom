@@ -2,7 +2,6 @@ import { childFlexScreen } from "../../../../config/mixClasses";
 import MainTitle from "../../../../components/typography";
 import Button from "../../../../components/Button";
 import React from "react";
-import confetti from "canvas-confetti";
 
 const Text = ({ children }: any) => {
   return <p className={"text-lg font-normal mb-5"}>{children}</p>;

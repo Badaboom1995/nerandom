@@ -11,9 +11,17 @@ type Slide = {
 
 interface IStepper {
   slides: Slide[];
+  onDone?: (p: void) => void;
+  Empty?: any;
+  slideChangeTimeout?: number;
 }
 
-const Stepper = ({ slides }: IStepper) => {
+const Stepper = ({
+  slides,
+  onDone,
+  slideChangeTimeout = 300,
+  Empty,
+}: IStepper) => {
   const [stepNumber, setStepNumber] = useState(0);
   const [CurrentSlide, setSlide]: any = useState(null);
 
@@ -26,7 +34,9 @@ const Stepper = ({ slides }: IStepper) => {
     if (stepNumber < slides.length - 1) {
       setTimeout(() => {
         setStepNumber(stepNumber + 1);
-      }, 300);
+      }, slideChangeTimeout);
+    } else {
+      onDone && onDone();
     }
   };
   const prevStep = () => {
@@ -38,15 +48,16 @@ const Stepper = ({ slides }: IStepper) => {
   return (
     <div className={"flex flex-col grow"}>
       <div className="flex-grow flex flex-col">
-        {CurrentSlide && (
+        {CurrentSlide && slides && (
           <CurrentSlide.component
             next={nextStep}
             prev={prevStep}
             data={CurrentSlide.props}
           />
         )}
+        {!slides.length && <Empty />}
       </div>
-      {!CurrentSlide?.hideDefaultControls && (
+      {!CurrentSlide?.hideDefaultControls && !!slides.length && (
         <div className="flex justify-between">
           <button className="" onClick={prevStep}>
             Назад

@@ -20,10 +20,6 @@ const LastCall = ({ next, prev, data }: any) => {
   const filteredSkills = idsToObjects("skills");
   const filteredOcupations = idsToObjects("occupation");
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const sendData = () => {
     setLoading(true);
     makeRequest

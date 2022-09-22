@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "../../../../components/UserCard";
-import cross from "./assets/cross.svg";
-import like from "./assets/like.svg";
+
 import tribe from "./assets/tribe.svg";
 import eye from "./assets/eye.svg";
 import chat from "./assets/chat.svg";
 import coffee from "./assets/coffee.svg";
+import tg from "./assets/telegram.png";
 import "./styles.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { getScoredPairs } from "../../../../helpers/findMatch";
+import { unwrapAirtable, unwrapIdsToNames } from "../../../../helpers/unwrap";
+import Stepper from "../../../../components/Stepper";
 
-const EmptyState = () => {
+import matchesSerivce from "../../../../services/matches";
+import { getUsersByNick } from "../../../../services/users";
+
+const EmptyState = ({ goto }: { goto?: any }) => {
   return (
     <div className={"relative empty"}>
       <div
@@ -36,11 +42,111 @@ const EmptyState = () => {
     </div>
   );
 };
+const Dialog = ({ users }: any = []) => {
+  return (
+    <div className={"flex flex-col"}>
+      {users?.map(({ name, occupation }: any) => (
+        <div className={"flex mb-5"}>
+          <div
+            className={"w-[65px] h-[65px] mr-3 rounded-full overflow-hidden"}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+              alt=""
+            />
+          </div>
+          <div className={"grow"}>
+            <p className={"text-lg mb"}>{name}</p>
+            <p
+              className={
+                "text-md text-slate-400 whitespace-nowrap overflow-scroll w-[300px]"
+              }
+            >
+              {occupation.join(", ")}
+            </p>
+          </div>
+          <div className={"flex items-center"}>
+            <button
+              className={
+                "p-2 px-4 rounded bg-slate-200 w-14 active:bg-slate-400 transition"
+              }
+            >
+              <img src={tg} alt="" className={"w-[20px]"} />{" "}
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-const Matching = () => {
+const Matching = ({
+  dicts,
+  user,
+}: {
+  dicts: { areas: any; skills: any; occupation: any };
+  user: any;
+}) => {
+  //Comment on prod
+  // user.telegram_nickname = "@tcndtht";
+
+  const [users, setUser]: any = useState([]);
+  const [isDone, setDone] = useState(false);
+  const [isReady, setReady] = useState(false);
+  const [myActions, setMyActions]: any = useState(null);
+  const [dialogs, setDialogs]: any = useState([]);
+
+  const slides = users
+    .filter((item: any) => !myActions?.includes(item.telegram_nickname))
+    .map((targetUser: any) => {
+      return {
+        component: UserCard,
+        hideDefaultControls: true,
+        props: { user: targetUser, currentUser: user },
+      };
+    });
+
+  const getNormalizedPairs = (rawPairs: any) => {
+    return rawPairs.map((pair: any) => ({
+      ...pair,
+      skills: unwrapIdsToNames(pair.skills, dicts.skills),
+      areas: unwrapIdsToNames(pair.areas, dicts.areas),
+      occupation: unwrapIdsToNames(pair.occupation, dicts.occupation, true),
+    }));
+  };
+  useEffect(() => {
+    matchesSerivce
+      .getMatchesByNickname(user.telegram_nickname)
+      .then((result) => {
+        const input = unwrapAirtable(result).map((item: any) =>
+          item.userOne === user.telegram_nickname ? item.userTwo : item.userOne
+        );
+        getUsersByNick(input).then((result) => {
+          setDialogs(
+            unwrapAirtable(result).map((item: any) => ({
+              name: item.name,
+              occupation: item["ID (from occupation)"],
+              telegram_nickname: item.telegram_nickname,
+            }))
+          );
+        });
+      });
+    matchesSerivce
+      .getActionsByNickname(user.telegram_nickname)
+      .then((results: any) => {
+        setMyActions(unwrapAirtable(results).map((item: any) => item.actionTo));
+      })
+      .then(() => getScoredPairs(user.telegram_nickname))
+      .then((result) => {
+        setUser(getNormalizedPairs(result));
+      })
+      .then(() => {
+        setReady(true);
+      });
+  }, []);
   return (
     <div className={""}>
-      <Tabs selectedTabClassName={"border-orange-400"}>
+      <Tabs selectedTabClassName={"border-orange-400"} defaultIndex={1}>
         <TabList className={"flex"}>
           <Tab className={"w-1/2 text-center p-2 border-b-2 outline-none"}>
             <div className={"flex items-center justify-center"}>
@@ -57,15 +163,19 @@ const Matching = () => {
         </TabList>
         <div className={"pt-10 h-96"}>
           <TabPanel>
-            <h2>Пока пусто</h2>
+            <Dialog users={dialogs} />
           </TabPanel>
           <TabPanel>
-            {/*<EmptyState />*/}
-            <UserCard />
-            <div className="flex w-full  z-10 relative justify-between -translate-y-1/4">
-              <img src={cross} alt="" className={" -translate-x-1/4 ml-2"} />
-              <img src={like} alt="" className={" translate-x-1/4 mr-2"} />
-            </div>
+            {isDone && <EmptyState />}
+            {!isDone && isReady && (
+              <Stepper
+                slides={slides || []}
+                onDone={() => {
+                  setDone(true);
+                }}
+                Empty={EmptyState}
+              />
+            )}
           </TabPanel>
         </div>
       </Tabs>

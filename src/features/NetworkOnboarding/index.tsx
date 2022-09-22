@@ -48,7 +48,14 @@ const NetworkingOnboarding = () => {
     const getSkills = makeRequest.get(
       "Skills?&filterByFormula=Search('1', {level})"
     );
-    const getOccupations = makeRequest.get("Occupation");
+    const getOccupations = makeRequest.get("Occupation").then((pageOne) => {
+      return makeRequest
+        .get(`Occupation?offset=${pageOne.data.offset}`)
+        .then((pageTwo) => {
+          return [...unwrapAirtable(pageOne), ...unwrapAirtable(pageTwo)];
+        });
+    });
+
     const sortByAlphabet = (items: any) =>
       items.sort((prev: any, next: any) => (prev.name > next.name ? 1 : -1));
     Promise.all([getAreas, getSkills, getOccupations]).then(function (values) {
@@ -60,75 +67,79 @@ const NetworkingOnboarding = () => {
           setSkills(sortByAlphabet(unwrapAirtable(item)));
         }
         if (index === 2) {
-          setOccupation(sortByAlphabet(unwrapAirtable(item)));
+          setOccupation(sortByAlphabet(item));
         }
       });
     });
   }, []);
-
+  // TODO Развязать
   return (
     <div className={`${childFlexScreen} relative`}>
-      {localStorage.getItem("hegai_dataSended") === "yes" ? (
-        <Final />
-      ) : user && areas && skills && occupation ? (
-        <Formik
-          onSubmit={(results) => {
-            console.log(results);
-          }}
-          initialValues={{
-            name: user?.first_name,
-            lastName: user?.last_name,
-            telegram_nickname: user?.username,
-          }}
-        >
-          {(props) => (
-            <Form className={"flex flex-col grow"}>
-              <Stepper
-                slides={[
-                  {
-                    component: Hello,
-                    hideDefaultControls: true,
-                    props: { user },
-                  },
-                  {
-                    component: AboutOne,
-                    props: {
-                      occupation: getChooseData(occupation),
-                      choosedOccupationIds: props.values,
-                      user,
+      {user && areas && skills && occupation ? (
+        localStorage.getItem("hegai_dataSended") === "yes" ? (
+          <Matching dicts={{ skills, areas, occupation }} user={user} />
+        ) : user && areas && skills && occupation ? (
+          <Formik
+            onSubmit={(results) => {
+              console.log(results);
+            }}
+            initialValues={{
+              name: user?.first_name,
+              lastName: user?.last_name,
+              telegram_nickname: user?.username,
+            }}
+          >
+            {(props) => (
+              <Form className={"flex flex-col grow"}>
+                <Stepper
+                  slides={[
+                    {
+                      component: Hello,
+                      hideDefaultControls: true,
+                      props: { user },
                     },
-                  },
-                  {
-                    component: AboutTwo,
-                    props: {
-                      areas: getChooseData(areas),
-                      skills: getChooseData(skills),
+                    {
+                      component: AboutOne,
+                      props: {
+                        occupation: getChooseData(occupation),
+                        choosedOccupationIds: props.values,
+                        user,
+                      },
                     },
-                  },
-                  {
-                    component: Request,
-                    props: {
-                      areas: getChooseData(areas),
-                      skills: getChooseData(skills),
+                    {
+                      component: AboutTwo,
+                      props: {
+                        areas: getChooseData(areas),
+                        skills: getChooseData(skills),
+                      },
                     },
-                  },
-                  {
-                    component: LastCall,
-                    hideDefaultControls: true,
-                    props: {
-                      values: props.values,
-                      dicts: { areas, skills, occupation },
+                    {
+                      component: Request,
+                      props: {
+                        areas: getChooseData(areas),
+                        skills: getChooseData(skills),
+                      },
                     },
-                  },
-                  {
-                    component: Final,
-                    hideDefaultControls: true,
-                  },
-                ]}
-              />
-            </Form>
-          )}
-        </Formik>
+                    {
+                      component: LastCall,
+                      hideDefaultControls: true,
+                      props: {
+                        values: props.values,
+                        dicts: { areas, skills, occupation },
+                      },
+                    },
+                    {
+                      component: Final,
+                      hideDefaultControls: true,
+                    },
+                  ]}
+                />
+              </Form>
+            )}
+          </Formik>
+        ) : (
+          <Loader />
+        )
       ) : (
         <Loader />
       )}

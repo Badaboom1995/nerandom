@@ -2,11 +2,14 @@ import tw from "tailwind-styled-components";
 
 const Container: any = tw.div`
     bg-white 
+    flex
+    flex-col
     rounded-xl 
     border
     border-slate-200
     h-[600px]
-    overflow-scroll
+    relative
+    pb-10
 `;
 const Header: any = tw.div`
    flex
@@ -35,22 +38,25 @@ const Name: any = tw.p`
    text-2xl
    max-w-2
    font-medium
-   mb-3
    overflow-hidden
    text-ellipsis
+   mb-3
 `;
 const Occupation: any = tw.div`
    flex
+   flex-wrap
    justify-center
    mb-2
 `;
 const OccupationItem: any = tw.span`
-   block   
-   bg-black
-   text-white
+   block 
+   border
+   border-black
+   text-black
    px-2
    py
-   mr-3
+   mr-2
+   mb-2
    whitespace-nowrap
    rounded-lg
 `;
@@ -64,16 +70,22 @@ const Tags: any = tw.div`
    px-5
    w-full
    bg-zinc-800
-   overflow-scroll
 `;
+const TagsWraper: any = tw.div`
+   overflow-x-scroll
+`;
+
 const TagItem: any = tw.span`
   text-white
   text-md
   font-medium
-  mr-3
+  whitespace-nowrap
+  mr-6
 `;
 const Description: any = tw.p`
   p-5
+  overflow-y-scroll
+  grow
 `;
 
 export {
@@ -83,6 +95,7 @@ export {
   AvatarWrapper,
   Name,
   Tags,
+  TagsWraper,
   TagItem,
   OccupationItem,
   Occupation,
