@@ -115,28 +115,26 @@ const Matching = ({
     }));
   };
   useEffect(() => {
-    matchesSerivce
-      .getMatchesByNickname(user.telegram_nickname)
-      .then((result) => {
-        const input = unwrapAirtable(result).map((item: any) =>
-          item.userOne === user.telegram_nickname ? item.userTwo : item.userOne
+    matchesSerivce.getMatchesByNickname(user.username).then((result) => {
+      const input = unwrapAirtable(result).map((item: any) =>
+        item.userOne === user.username ? item.userTwo : item.userOne
+      );
+      getUsersByNick(input).then((result) => {
+        setDialogs(
+          unwrapAirtable(result).map((item: any) => ({
+            name: item.name,
+            occupation: item["ID (from occupation)"],
+            telegram_nickname: item.telegram_nickname,
+          }))
         );
-        getUsersByNick(input).then((result) => {
-          setDialogs(
-            unwrapAirtable(result).map((item: any) => ({
-              name: item.name,
-              occupation: item["ID (from occupation)"],
-              telegram_nickname: item.telegram_nickname,
-            }))
-          );
-        });
       });
+    });
     matchesSerivce
-      .getActionsByNickname(user.telegram_nickname)
+      .getActionsByNickname(user.username)
       .then((results: any) => {
         setMyActions(unwrapAirtable(results).map((item: any) => item.actionTo));
       })
-      .then(() => getScoredPairs(user.telegram_nickname))
+      .then(() => getScoredPairs(user.username))
       .then((result) => {
         setUser(getNormalizedPairs(result));
       })
