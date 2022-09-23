@@ -15,7 +15,7 @@ import Stepper from "../../../../components/Stepper";
 import matchesSerivce from "../../../../services/matches";
 import { getUsersByNick } from "../../../../services/users";
 
-const EmptyState = ({ goto }: { goto?: any }) => {
+const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
   return (
     <div className={"relative empty mt-5"}>
       <div
@@ -31,7 +31,10 @@ const EmptyState = ({ goto }: { goto?: any }) => {
         На сегодня всё,
         <br /> приходи завтра
       </div>
-      <button className={"underline text-center w-full"}>
+      <button
+        onClick={() => openDialogs(0)}
+        className={"underline text-center w-full"}
+      >
         Перейти к диалогам
       </button>
       <img
@@ -45,7 +48,7 @@ const EmptyState = ({ goto }: { goto?: any }) => {
 const Dialog = ({ users }: any = []) => {
   return (
     <div className={"flex flex-col"}>
-      {users?.map(({ name, occupation }: any) => (
+      {users?.map(({ name, occupation, telegram_nickname }: any) => (
         <div className={"flex mb-5 dialog"}>
           <div className={"flex grow"}>
             <div
@@ -71,6 +74,12 @@ const Dialog = ({ users }: any = []) => {
               className={
                 "p-2 px-4 rounded bg-slate-200 w-14 active:bg-slate-400 transition"
               }
+              onClick={() => {
+                const win: any = window;
+                win.Telegram.WebApp.openTelegramLink(
+                  `https://t.me/${telegram_nickname}`
+                );
+              }}
             >
               <img src={tg} alt="" className={"w-[20px]"} />{" "}
             </button>
@@ -96,6 +105,7 @@ const Matching = ({
   const [isReady, setReady] = useState(false);
   const [myActions, setMyActions]: any = useState(null);
   const [dialogs, setDialogs]: any = useState([]);
+  const [tabIndex, setTabIndex] = useState(1);
 
   const slides = users
     .filter((item: any) => !myActions?.includes(item.telegram_nickname))
@@ -145,7 +155,11 @@ const Matching = ({
   }, []);
   return (
     <div className={""}>
-      <Tabs selectedTabClassName={"border-orange-400"} defaultIndex={1}>
+      <Tabs
+        selectedTabClassName={"border-orange-400"}
+        onSelect={(index) => setTabIndex(index)}
+        selectedIndex={tabIndex}
+      >
         <TabList className={"flex"}>
           <Tab className={"w-1/2 text-center p-2 border-b-2 outline-none"}>
             <div className={"flex items-center justify-center"}>
@@ -165,14 +179,14 @@ const Matching = ({
             <Dialog users={dialogs} />
           </TabPanel>
           <TabPanel>
-            {isDone && <EmptyState />}
+            {isDone && <EmptyState openDialogs={setTabIndex} />}
             {!isDone && isReady && (
               <Stepper
                 slides={slides || []}
                 onDone={() => {
                   setDone(true);
                 }}
-                Empty={EmptyState}
+                Empty={<EmptyState openDialogs={setTabIndex} />}
               />
             )}
           </TabPanel>

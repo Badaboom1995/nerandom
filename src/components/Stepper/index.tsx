@@ -55,7 +55,7 @@ const Stepper = ({
             data={CurrentSlide.props}
           />
         )}
-        {!slides.length && <Empty />}
+        {!slides.length && Empty}
       </div>
       {!CurrentSlide?.hideDefaultControls && !!slides.length && (
         <div className="flex justify-between">
