@@ -75,7 +75,7 @@ const NetworkingOnboarding = () => {
   }, []);
   // TODO Развязать
   return (
-    <div className={`${childFlexScreen} relative`}>
+    <div className={`${childFlexScreen} relative network`}>
       {user && areas && skills && occupation ? (
         localStorage.getItem("hegai_dataSended") === "yes" ? (
           <Matching dicts={{ skills, areas, occupation }} user={user} />
@@ -91,7 +91,7 @@ const NetworkingOnboarding = () => {
             }}
           >
             {(props) => (
-              <Form className={"flex flex-col grow"}>
+              <Form className={"flex flex-col grow "}>
                 <Stepper
                   slides={[
                     {

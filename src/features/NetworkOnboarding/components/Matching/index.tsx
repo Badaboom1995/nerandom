@@ -17,7 +17,7 @@ import { getUsersByNick } from "../../../../services/users";
 
 const EmptyState = ({ goto }: { goto?: any }) => {
   return (
-    <div className={"relative empty"}>
+    <div className={"relative empty mt-5"}>
       <div
         className={
           "py-14 text-white text-center text-2xl font-black  bg-orange-500 rounded-lg relative mb-10 drop-shadow-lg"
@@ -37,7 +37,7 @@ const EmptyState = ({ goto }: { goto?: any }) => {
       <img
         src={tribe}
         alt="tribe"
-        className={"absolute bottom-0 left-1/2 -translate-x-1/2 min-w-[700px]"}
+        className={"fixed -bottom-5 left-1/2 -translate-x-1/2 min-w-[700px]"}
       />
     </div>
   );
@@ -46,25 +46,26 @@ const Dialog = ({ users }: any = []) => {
   return (
     <div className={"flex flex-col"}>
       {users?.map(({ name, occupation }: any) => (
-        <div className={"flex mb-5"}>
-          <div
-            className={"w-[65px] h-[65px] mr-3 rounded-full overflow-hidden"}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
-              alt=""
-            />
-          </div>
-          <div className={"grow"}>
-            <p className={"text-lg mb"}>{name}</p>
-            <p
+        <div className={"flex mb-5 dialog"}>
+          <div className={"flex grow"}>
+            <div
               className={
-                "text-md text-slate-400 whitespace-nowrap overflow-scroll w-[300px]"
+                "min-w-[65px] max-w-[65px] h-[65px] mr-3 rounded-full overflow-hidden"
               }
             >
-              {occupation.join(", ")}
-            </p>
+              <img
+                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                alt=""
+              />
+            </div>
+            <div className={"grow "}>
+              <p className={"text-lg mb"}>{name}</p>
+              <p className={"text-sm text-slate-400  overflow-scroll"}>
+                {occupation.join(", ")}
+              </p>
+            </div>
           </div>
+
           <div className={"flex items-center"}>
             <button
               className={
@@ -88,9 +89,9 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  // user.telegram_nickname = "@tcndtht";
+  user.username = "@tcndtht";
 
-  const [users, setUser]: any = useState([]);
+  const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
   const [isReady, setReady] = useState(false);
   const [myActions, setMyActions]: any = useState(null);
@@ -136,7 +137,7 @@ const Matching = ({
       })
       .then(() => getScoredPairs(user.username))
       .then((result) => {
-        setUser(getNormalizedPairs(result));
+        setUsers(getNormalizedPairs(result));
       })
       .then(() => {
         setReady(true);
@@ -159,7 +160,7 @@ const Matching = ({
             </div>
           </Tab>
         </TabList>
-        <div className={"pt-10 h-96"}>
+        <div className={"pt-5 pb-10"}>
           <TabPanel>
             <Dialog users={dialogs} />
           </TabPanel>

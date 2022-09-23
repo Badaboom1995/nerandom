@@ -7,7 +7,6 @@ const Container: any = tw.div`
     rounded-xl 
     border
     border-slate-200
-    h-[600px]
     relative
     pb-10
 `;
@@ -15,7 +14,8 @@ const Header: any = tw.div`
    flex
    flex-col
    items-center
-   p-5
+   p-2
+   border-b
 `;
 const HeaderInfo: any = tw.div`
    flex
@@ -25,14 +25,17 @@ const HeaderInfo: any = tw.div`
    
 `;
 const AvatarWrapper: any = tw.div`
-   w-[150px]
-   h-[150px]
+   w-[75px]
+   h-[75px]
+    rounded-full
+    overflow-hidden
    mb-4
-   overflow-hidden
-   rounded-full
+   mr-2
 `;
 const Avatar: any = tw.img`
-   w-30
+   w-full
+   rounded-full
+   
 `;
 const Name: any = tw.p`
    text-2xl
@@ -41,6 +44,7 @@ const Name: any = tw.p`
    overflow-hidden
    text-ellipsis
    mb-3
+   
 `;
 const Occupation: any = tw.div`
    flex
@@ -66,28 +70,27 @@ const Telegram: any = tw.span`
 `;
 const Tags: any = tw.div`
    flex
+   flex-wrap
    p-2
    px-5
    w-full
-   bg-zinc-800
+   
 `;
 const TagsWraper: any = tw.div`
-   overflow-x-scroll
+   flex-wrap
+   border
 `;
 
 const TagItem: any = tw.span`
   text-white
-  text-md
+  text-sm
   font-medium
+  m-1
   whitespace-nowrap
-  mr-6
+  bg-yellow-200
+  rounded
+  p-1
 `;
-const Description: any = tw.p`
-  p-5
-  overflow-y-scroll
-  grow
-`;
-
 export {
   Header,
   HeaderInfo,
@@ -103,3 +106,10 @@ export {
   Description,
   Container,
 };
+
+const Description: any = tw.p`
+  p-5
+  overflow-y-scroll
+  grow
+  
+`;

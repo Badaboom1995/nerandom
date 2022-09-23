@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Header,
   HeaderInfo,
@@ -8,9 +8,7 @@ import {
   Tags,
   TagItem,
   OccupationItem,
-  TagsWraper,
   Occupation,
-  Telegram,
   Description,
   Container,
 } from "./styled";
@@ -19,15 +17,35 @@ import like from "../../features/NetworkOnboarding/components/Matching/assets/li
 import matchesSerivce from "../../services/matches";
 import { toast } from "react-toastify";
 import { unwrapAirtable } from "../../helpers/unwrap";
+import { useSwipeable } from "react-swipeable";
+
+const buttonClass =
+  "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150  mx-5 mb-2 p-2 text-white text-lg uppercase font-medium mg-2 rounded-full flex items-center";
 
 const UserCard = ({ data = {}, next }: any) => {
-  const { name, occupation, telegram_nickname, skills, areas, about } =
-    data.user;
-  const buttonClass =
-    "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150";
-  const currentUser = data.currentUser.telegram_nickname;
+  const {
+    name,
+    occupation,
+    telegram_nickname,
+    skills,
+    areas,
+    about,
+    lastname,
+  } = data.user;
+
+  const card: any = useRef();
+
+  const currentUser = data.currentUser.username;
+  const [showSuccess, setSuccess] = useState(false);
+  const [showSkip, setSkip] = useState(false);
   const likeUser = () => {
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+      next();
+    }, 100);
     matchesSerivce.createAction(currentUser, telegram_nickname, "like");
+
     matchesSerivce
       .checkIfMatch(telegram_nickname, currentUser)
       .then((result) => {
@@ -36,17 +54,36 @@ const UserCard = ({ data = {}, next }: any) => {
             toast("Мэтч!");
           });
         }
-      })
-      .then(() => {
-        next();
       });
   };
+
   const skipUser = () => {
+    setSkip(true);
+    setTimeout(() => {
+      setSkip(false);
+      next();
+    }, 100);
     matchesSerivce.createAction(currentUser, telegram_nickname, "dislike");
     next();
   };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: (eventData) => skipUser(),
+    onSwipedRight: (eventData) => likeUser(),
+  });
+
   return data.user ? (
-    <Container>
+    <Container {...handlers}>
+      <div
+        className={`fixed top-1/2 -translate-y-1/2 right-0 w-10 h-80 bg-green-${
+          showSuccess ? "200" : "0"
+        } rounded transition transition-100`}
+      ></div>
+      <div
+        className={`fixed top-1/2 -translate-y-1/2 left-0 w-10 h-80 bg-slate-${
+          showSkip ? "200" : "0"
+        } rounded transition transition-100`}
+      ></div>
       <Header>
         <AvatarWrapper>
           <Avatar
@@ -58,36 +95,50 @@ const UserCard = ({ data = {}, next }: any) => {
         </AvatarWrapper>
 
         <HeaderInfo>
-          <Name>{name}</Name>
+          <Name>
+            {name} {lastname}
+          </Name>
           <Occupation>
             {!occupation?.length && (
               <OccupationItem>🥸 Должность неизвестна</OccupationItem>
             )}
-            {occupation?.map((item: any) => (
-              <OccupationItem key={item}>{item}</OccupationItem>
-            ))}
+            {occupation && <OccupationItem>{occupation[0]}</OccupationItem>}
           </Occupation>
-          <Telegram>{telegram_nickname}</Telegram>
+          {/*<Telegram>{telegram_nickname}</Telegram>*/}
         </HeaderInfo>
       </Header>
-      <Tags>
-        <TagsWraper>
-          {!skills?.length && !areas?.length && <TagItem>???</TagItem>}
-          {skills?.map((item: any) => (
-            <TagItem key={item}>{item}</TagItem>
-          ))}
-          {areas?.map((item: any) => (
-            <TagItem key={item}>{item}</TagItem>
-          ))}
-        </TagsWraper>
-      </Tags>
+
       <Description>{about}</Description>
-      <div className="flex w-full z-10 justify-between translate-y-2/4 absolute bottom-0">
-        <button className={"-ml-2 " + buttonClass} onClick={skipUser}>
-          <img src={cross} alt="" />
+      <Tags>
+        {!skills?.length && !areas?.length && <TagItem>???</TagItem>}
+        {skills?.map((item: any) => (
+          <TagItem key={item} className={`bg-${"slate"}-400`}>
+            {item}
+          </TagItem>
+        ))}
+        {areas?.map((item: any) => (
+          <TagItem key={item} className={`bg-${"slate"}-400`}>
+            {item}
+          </TagItem>
+        ))}
+      </Tags>
+      <div className="flex w-full z-10 justify-between fixed bottom-0 left-0">
+        {/*<button className={"bg-black active:bg-slate-900" + buttonClass}>*/}
+        {/* */}
+        {/*  Дизлайк*/}
+        {/*</button>*/}
+        {/*<button className={" active:bg-orange-800" + buttonClass}>*/}
+
+        {/*  Лайк*/}
+        {/*</button>*/}
+        <button className={"ml-5  bg-black " + buttonClass} onClick={skipUser}>
+          <img src={cross} alt="" className={"w-10 w-[70px]"} />
         </button>
-        <button className={"-mr-2 " + buttonClass} onClick={likeUser}>
-          <img src={like} alt="" />
+        <button
+          className={"mr-5 bg-[#FF7F0A] " + buttonClass}
+          onClick={likeUser}
+        >
+          <img src={like} alt="" className={"w-10  w-[70px]"} />
         </button>
       </div>
     </Container>
