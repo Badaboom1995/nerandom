@@ -13,6 +13,7 @@ import matchesSerivce from "../../../../services/matches";
 import { getUsersByNick } from "../../../../services/users";
 import EmptyState from "./EmptyState";
 import Dialog from "./Dialog";
+import { dummyUrl } from "../../../../config/consts";
 
 const Matching = ({
   dicts,
@@ -22,7 +23,7 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  user.username = "@badavoo";
+  user.username = "@tcndtht";
 
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
@@ -44,6 +45,7 @@ const Matching = ({
   const getNormalizedPairs = (rawPairs: any) => {
     return rawPairs.map((pair: any) => ({
       ...pair,
+      Avatar: pair.Avatar || [{ url: dummyUrl }],
       skills: unwrapIdsToNames(pair.skills, dicts.skills),
       areas: unwrapIdsToNames(pair.areas, dicts.areas),
       occupation: unwrapIdsToNames(pair.occupation, dicts.occupation, true),
@@ -61,11 +63,11 @@ const Matching = ({
             name: item.name,
             occupation: item["ID (from occupation)"],
             telegram_nickname: item.telegram_nickname,
+            Avatar: item.Avatar || [{ url: dummyUrl }],
           }))
         );
       });
     });
-
     matchesSerivce
       .getActionsByNickname(user.username)
       .then((results: any) => {
@@ -73,6 +75,7 @@ const Matching = ({
       })
       .then(() => getScoredPairs(user.username))
       .then((result) => {
+        console.log(result);
         setUsers(getNormalizedPairs(result));
       })
       .then(() => {

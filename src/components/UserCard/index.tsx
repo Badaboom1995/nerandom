@@ -18,6 +18,7 @@ import matchesSerivce from "../../services/matches";
 import { toast } from "react-toastify";
 import { unwrapAirtable } from "../../helpers/unwrap";
 import { useSwipeable } from "react-swipeable";
+import { dummyUrl } from "../../config/consts";
 
 const buttonClass =
   "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150  mx-5 mb-2 p-2 text-white text-lg uppercase font-medium mg-2 rounded-full flex items-center";
@@ -32,7 +33,9 @@ const UserCard = ({ data = {}, next }: any) => {
     about,
     lastname,
   } = data.user;
+  data.user.Avatar = data.user.Avatar ? data.user.Avatar : [{ url: dummyUrl }];
 
+  console.log(data.user);
   const currentUser = data.currentUser.username;
   const [showSuccess, setSuccess] = useState(false);
   const [showSkip, setSkip] = useState(false);
@@ -49,7 +52,7 @@ const UserCard = ({ data = {}, next }: any) => {
       .then((result) => {
         if (unwrapAirtable(result)[0]) {
           matchesSerivce.create(currentUser, telegram_nickname).then(() => {
-            toast("Мэтч!");
+            toast("Мэтч!", { autoClose: 1000 });
           });
         }
       });
@@ -74,22 +77,17 @@ const UserCard = ({ data = {}, next }: any) => {
     <Container {...handlers}>
       <div
         className={`fixed top-0 -right-[30px] w-10 h-screen bg-orange-${
-          showSuccess ? "100" : "0"
+          showSuccess ? "300" : "0"
         } rounded transition transition-100`}
       ></div>
       <div
         className={`fixed top-0 -left-[30px] w-10 h-screen  bg-slate-${
-          showSkip ? "200" : "0"
+          showSkip ? "600" : "0"
         } rounded transition transition-100`}
       ></div>
       <Header>
         <AvatarWrapper>
-          <Avatar
-            src={
-              "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
-            }
-            alt=""
-          />
+          <Avatar src={data.user.Avatar[0].url} alt="" />
         </AvatarWrapper>
 
         <HeaderInfo>
