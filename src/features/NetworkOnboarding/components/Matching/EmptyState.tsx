@@ -2,13 +2,7 @@ import React from "react";
 import eye from "./assets/eye.svg";
 import tribe from "./assets/tribe.svg";
 
-const EmptyState = ({
-  openDialogs,
-  assets,
-}: {
-  openDialogs?: any;
-  assets: string[];
-}) => {
+const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
   return (
     <div className={"relative empty mt-5"}>
       <div

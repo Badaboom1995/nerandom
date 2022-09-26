@@ -33,8 +33,6 @@ const UserCard = ({ data = {}, next }: any) => {
     lastname,
   } = data.user;
 
-  const card: any = useRef();
-
   const currentUser = data.currentUser.username;
   const [showSuccess, setSuccess] = useState(false);
   const [showSkip, setSkip] = useState(false);
@@ -75,12 +73,12 @@ const UserCard = ({ data = {}, next }: any) => {
   return data.user ? (
     <Container {...handlers}>
       <div
-        className={`fixed top-1/2 -translate-y-1/2 right-0 w-10 h-80 bg-green-${
-          showSuccess ? "200" : "0"
+        className={`fixed top-0 -right-[30px] w-10 h-screen bg-orange-${
+          showSuccess ? "100" : "0"
         } rounded transition transition-100`}
       ></div>
       <div
-        className={`fixed top-1/2 -translate-y-1/2 left-0 w-10 h-80 bg-slate-${
+        className={`fixed top-0 -left-[30px] w-10 h-screen  bg-slate-${
           showSkip ? "200" : "0"
         } rounded transition transition-100`}
       ></div>

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UserCard from "../../../../components/UserCard";
 
-import tribe from "./assets/tribe.svg";
-import eye from "./assets/eye.svg";
 import chat from "./assets/chat.svg";
 import coffee from "./assets/coffee.svg";
-import tg from "./assets/telegram.png";
 import "./styles.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { getScoredPairs } from "../../../../helpers/findMatch";
@@ -14,85 +11,8 @@ import Stepper from "../../../../components/Stepper";
 
 import matchesSerivce from "../../../../services/matches";
 import { getUsersByNick } from "../../../../services/users";
-import useImagePreloader from "../../../../hooks/useImagePreloader";
-
-const assets = [tribe, eye, chat, coffee, tg];
-
-const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
-  return (
-    <div className={"relative empty mt-5"}>
-      <div
-        className={
-          "py-14 text-white text-center text-2xl font-black  bg-orange-500 rounded-lg relative mb-10 drop-shadow-lg"
-        }
-      >
-        <img
-          src={eye}
-          alt="eye"
-          className={"absolute left-1/2 -top-10 -translate-x-1/2"}
-        />
-        На сегодня всё,
-        <br /> приходи завтра
-      </div>
-      <button
-        onClick={() => openDialogs(0)}
-        className={"underline text-center w-full"}
-      >
-        Перейти к диалогам
-      </button>
-      <img
-        src={tribe}
-        alt="tribe"
-        className={"fixed -bottom-5 left-1/2 -translate-x-1/2 min-w-[700px]"}
-      />
-    </div>
-  );
-};
-
-const Dialog = ({ users }: any = []) => {
-  return (
-    <div className={"flex flex-col"}>
-      {users?.map(({ name, occupation, telegram_nickname }: any) => (
-        <div className={"flex mb-5 dialog"}>
-          <div className={"flex grow"}>
-            <div
-              className={
-                "min-w-[65px] max-w-[65px] h-[65px] mr-3 rounded-full overflow-hidden"
-              }
-            >
-              <img
-                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
-                alt=""
-              />
-            </div>
-            <div className={"grow "}>
-              <p className={"text-lg mb"}>{name}</p>
-              <p className={"text-sm text-slate-400  overflow-scroll"}>
-                {occupation?.join(", ")}
-              </p>
-            </div>
-          </div>
-
-          <div className={"flex items-center"}>
-            <button
-              className={
-                "p-2 px-4 rounded bg-slate-200 w-14 active:bg-slate-400 transition"
-              }
-              onClick={() => {
-                const win: any = window;
-                win.Telegram.WebApp.openTelegramLink(
-                  `https://t.me/${telegram_nickname}`
-                );
-              }}
-            >
-              <img src={tg} alt="" className={"w-[20px]"} />{" "}
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+import EmptyState from "./EmptyState";
+import Dialog from "./Dialog";
 
 const Matching = ({
   dicts,
@@ -102,7 +22,7 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  user.username = "@tcndtht";
+  user.username = "@badavoo";
 
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
