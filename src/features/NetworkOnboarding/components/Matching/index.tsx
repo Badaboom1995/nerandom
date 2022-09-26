@@ -15,6 +15,16 @@ import Stepper from "../../../../components/Stepper";
 import matchesSerivce from "../../../../services/matches";
 import { getUsersByNick } from "../../../../services/users";
 
+const pictures = [tribe, eye, chat, coffee, tg];
+
+const preloadedData = pictures.map((picture: any) => {
+  const img = new Image();
+  img.src = picture.fileName;
+  return img;
+});
+
+console.log(preloadedData);
+
 const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
   return (
     <div className={"relative empty mt-5"}>
@@ -38,13 +48,14 @@ const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
         Перейти к диалогам
       </button>
       <img
-        src={tribe}
+        src={preloadedData[0].src}
         alt="tribe"
         className={"fixed -bottom-5 left-1/2 -translate-x-1/2 min-w-[700px]"}
       />
     </div>
   );
 };
+
 const Dialog = ({ users }: any = []) => {
   return (
     <div className={"flex flex-col"}>
@@ -98,7 +109,7 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  // user.username = "@tcndtht";
+  user.username = "@tcndtht";
 
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
