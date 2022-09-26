@@ -103,7 +103,6 @@ const Matching = ({
 }) => {
   //Comment on prod
   user.username = "@tcndtht";
-  const { imagesPreloaded } = useImagePreloader(assets);
 
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
@@ -160,9 +159,6 @@ const Matching = ({
         setReady(true);
       });
   }, []);
-  useEffect(() => {
-    console.log("image preloaded");
-  }, [imagesPreloaded]);
 
   return (
     <div className={""}>
