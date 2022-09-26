@@ -80,20 +80,21 @@ export const getScoredPairs = (currentUserNickname: string) => {
     const data = [...unwrappedResult].filter(
       (item) => item.telegram_nickname !== currentUser.telegram_nickname
     );
+    console.log(data);
 
     const getPairScore = (lh: any, rh: any) => {
       let score = 0;
       lh.requestAreas?.forEach((area: string) => {
-        if (rh.areas.includes(area)) score++;
+        if (rh.areas?.includes(area)) score++;
       });
       lh.requestSkills?.forEach((skill: string) => {
-        if (rh.skills.includes(skill)) score++;
+        if (rh.skills?.includes(skill)) score++;
       });
       rh.requestAreas?.forEach((area: string) => {
-        if (lh.areas.includes(area)) score++;
+        if (lh.areas?.includes(area)) score++;
       });
       rh.requestSkills?.forEach((skill: string) => {
-        if (lh.skills.includes(skill)) score++;
+        if (lh.skills?.includes(skill)) score++;
       });
       return score;
     };

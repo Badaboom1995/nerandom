@@ -14,16 +14,9 @@ import Stepper from "../../../../components/Stepper";
 
 import matchesSerivce from "../../../../services/matches";
 import { getUsersByNick } from "../../../../services/users";
+import useImagePreloader from "../../../../hooks/useImagePreloader";
 
-const pictures = [tribe, eye, chat, coffee, tg];
-
-const preloadedData = pictures.map((picture: any) => {
-  const img = new Image();
-  img.src = picture.fileName;
-  return img;
-});
-
-console.log(preloadedData);
+const assets = [tribe, eye, chat, coffee, tg];
 
 const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
   return (
@@ -48,7 +41,7 @@ const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
         Перейти к диалогам
       </button>
       <img
-        src={preloadedData[0].src}
+        src={tribe}
         alt="tribe"
         className={"fixed -bottom-5 left-1/2 -translate-x-1/2 min-w-[700px]"}
       />
@@ -75,7 +68,7 @@ const Dialog = ({ users }: any = []) => {
             <div className={"grow "}>
               <p className={"text-lg mb"}>{name}</p>
               <p className={"text-sm text-slate-400  overflow-scroll"}>
-                {occupation.join(", ")}
+                {occupation?.join(", ")}
               </p>
             </div>
           </div>
@@ -109,7 +102,8 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  // user.username = "@tcndtht";
+  user.username = "@tcndtht";
+  const { imagesPreloaded } = useImagePreloader(assets);
 
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
@@ -136,6 +130,7 @@ const Matching = ({
       occupation: unwrapIdsToNames(pair.occupation, dicts.occupation, true),
     }));
   };
+
   useEffect(() => {
     matchesSerivce.getMatchesByNickname(user.username).then((result) => {
       const input = unwrapAirtable(result).map((item: any) =>
@@ -151,6 +146,7 @@ const Matching = ({
         );
       });
     });
+
     matchesSerivce
       .getActionsByNickname(user.username)
       .then((results: any) => {
@@ -164,6 +160,10 @@ const Matching = ({
         setReady(true);
       });
   }, []);
+  useEffect(() => {
+    console.log("image preloaded");
+  }, [imagesPreloaded]);
+
   return (
     <div className={""}>
       <Tabs
