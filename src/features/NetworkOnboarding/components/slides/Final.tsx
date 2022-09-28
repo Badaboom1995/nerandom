@@ -51,7 +51,13 @@ const Final = ({ next, prev }: any) => {
             @badavoo
           </button>
         </p>
-        <Button type={"submit"} className={"mb-3"}>
+        <Button
+          type={"submit"}
+          className={"mb-3"}
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
           <Link to={"/networking"}>Завершить</Link>
         </Button>
       </div>
