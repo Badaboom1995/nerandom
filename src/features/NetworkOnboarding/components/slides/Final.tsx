@@ -31,28 +31,27 @@ const Final = ({ next, prev }: any) => {
       <div className={"flex flex-col items-center text-center"}>
         <img className={"w-20 mb-10"} src={cup} alt="" />
         <p className={"mb-5 text-md font-medium w-full"}>
-          Когда наберем достаточно участников сразу пришлем уведомление в бот
+          Мы уже подобрали для тебя несколько интересных собеседников. Желаем
+          приятного нетворкинга 🤓
         </p>
-        {/*<p className={"mb-5 text-md font-medium w-full"}>*/}
-        {/*  Оповещение придет бота @hegai.hub в следующий вторник.*/}
-        {/*</p>*/}
         <p
           className={
             "relative p-8  text-md font-medium bg-slate-200 mb-10 rounded-lg"
           }
         >
-          Будет тиндер формат с очень классными ребятами, не пропусти :)
+          Если что-то в приложении пойдет не так, будет неудобно или непонятно -
+          пиши{" "}
+          <button
+            onClick={() => {
+              const win: any = window;
+              win.Telegram.WebApp.openTelegramLink(`https://t.me/@badavoo`);
+            }}
+            className={"text-blue-400"}
+          >
+            @badavoo
+          </button>
         </p>
-        <Button
-          type={"submit"}
-          className={"mb-3"}
-          onClick={() => {
-            const wind: any = window;
-            if (wind.Telegram?.WebApp.close) {
-              wind.Telegram?.WebApp.close();
-            }
-          }}
-        >
+        <Button type={"submit"} className={"mb-3"}>
           <Link to={"/networking"}>Завершить</Link>
         </Button>
       </div>

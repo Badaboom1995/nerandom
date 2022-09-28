@@ -80,8 +80,6 @@ export const getScoredPairs = (currentUserNickname: string) => {
     const data = [...unwrappedResult].filter(
       (item) => item.telegram_nickname !== currentUser.telegram_nickname
     );
-    console.log(data);
-
     const getPairScore = (lh: any, rh: any) => {
       let score = 0;
       lh.requestAreas?.forEach((area: string) => {

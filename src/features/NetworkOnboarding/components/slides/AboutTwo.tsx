@@ -7,6 +7,7 @@ const BigTitle = ({ children }: any) => {
 };
 
 const AboutTwo = ({ data }: any) => {
+  console.log(data);
   return (
     <div>
       <Title>(2/4) Расскажи немного о себе ⭐️</Title>

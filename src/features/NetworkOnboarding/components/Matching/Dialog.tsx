@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import tg from "./assets/telegram.png";
+import matchesSerivce from "../../../../services/matches";
+import { unwrapAirtable } from "../../../../helpers/unwrap";
+import { getUsersByNick } from "../../../../services/users";
+import { dummyUrl } from "../../../../config/consts";
 
-const Dialog = ({ users }: any = []) => {
+const Dialog = ({ user }: any = []) => {
+  const [dialogs, setDialogs]: any = useState([]);
+  const [isLoaded, setLoaded]: any = useState(false);
+
+  const getDialogs = () => {
+    matchesSerivce.getMatchesByNickname(user.username).then((result) => {
+      const input = unwrapAirtable(result).map((item: any) =>
+        item.userOne === user.username ? item.userTwo : item.userOne
+      );
+      getUsersByNick(input).then((result) => {
+        setDialogs(
+          unwrapAirtable(result).map((item: any) => ({
+            name: item.name,
+            occupation: item["ID (from occupation)"],
+            telegram_nickname: item.telegram_nickname,
+            Avatar: item.Avatar || [{ url: dummyUrl }],
+          }))
+        );
+        setLoaded(true);
+      });
+    });
+  };
+
+  useEffect(() => {
+    getDialogs();
+  }, []);
+
   return (
     <div className={"flex flex-col"}>
-      {!users.length && (
+      {!isLoaded && "Загрузка..."}
+      {!dialogs.length && isLoaded && (
         <p className={"text-2xl font-black text-slate-300 text-center py-10"}>
           Пока никого
         </p>
       )}
-      {users?.map(({ name, occupation, telegram_nickname, Avatar }: any) => (
+      {dialogs?.map(({ name, occupation, telegram_nickname, Avatar }: any) => (
         <div className={"flex mb-5 dialog"}>
           <div className={"flex grow"}>
             <div
@@ -24,6 +55,7 @@ const Dialog = ({ users }: any = []) => {
               <p className={"text-sm text-slate-400  overflow-scroll"}>
                 {occupation ? occupation.join(", ") : "Должность неизвестна"}
               </p>
+              <p className={"text-sm text-orange-300"}>{telegram_nickname}</p>
             </div>
           </div>
 

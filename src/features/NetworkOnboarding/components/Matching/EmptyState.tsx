@@ -27,7 +27,9 @@ const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
       <img
         src={tribe}
         alt="tribe"
-        className={"fixed -bottom-5 left-1/2 -translate-x-1/2 min-w-[700px]"}
+        className={
+          "absolute -bottom-5 left-1/2 -translate-x-1/2 min-w-[500px] max-h-[300px]"
+        }
       />
     </div>
   );

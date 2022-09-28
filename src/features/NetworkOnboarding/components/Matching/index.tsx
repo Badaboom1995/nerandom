@@ -14,6 +14,7 @@ import { getUsersByNick } from "../../../../services/users";
 import EmptyState from "./EmptyState";
 import Dialog from "./Dialog";
 import { dummyUrl } from "../../../../config/consts";
+import Cards from "./Cards";
 
 const Matching = ({
   dicts,
@@ -23,64 +24,47 @@ const Matching = ({
   user: any;
 }) => {
   //Comment on prod
-  user.username = "@tcndtht";
-
-  const [users, setUsers]: any = useState([]);
-  const [isDone, setDone] = useState(false);
-  const [isReady, setReady] = useState(false);
-  const [myActions, setMyActions]: any = useState(null);
-  const [dialogs, setDialogs]: any = useState([]);
+  // user.username = "@VictorSavyuk";
   const [tabIndex, setTabIndex] = useState(1);
 
-  const slides = users
-    .filter((item: any) => !myActions?.includes(item.telegram_nickname))
-    .map((targetUser: any) => {
-      return {
-        component: UserCard,
-        hideDefaultControls: true,
-        props: { user: targetUser, currentUser: user },
-      };
-    });
-
-  const getNormalizedPairs = (rawPairs: any) => {
-    return rawPairs.map((pair: any) => ({
-      ...pair,
-      Avatar: pair.Avatar || [{ url: dummyUrl }],
-      skills: unwrapIdsToNames(pair.skills, dicts.skills),
-      areas: unwrapIdsToNames(pair.areas, dicts.areas),
-      occupation: unwrapIdsToNames(pair.occupation, dicts.occupation, true),
-    }));
-  };
+  // const getNormalizedPairs = (rawPairs: any) => {
+  //   return rawPairs.map((pair: any) => ({
+  //     ...pair,
+  //     Avatar: pair.Avatar || [{ url: dummyUrl }],
+  //     skills: unwrapIdsToNames(pair.skills, dicts.skills),
+  //     areas: unwrapIdsToNames(pair.areas, dicts.areas),
+  //     occupation: unwrapIdsToNames(pair.occupation, dicts.occupation, true),
+  //   }));
+  // };
 
   useEffect(() => {
-    matchesSerivce.getMatchesByNickname(user.username).then((result) => {
-      const input = unwrapAirtable(result).map((item: any) =>
-        item.userOne === user.username ? item.userTwo : item.userOne
-      );
-      getUsersByNick(input).then((result) => {
-        setDialogs(
-          unwrapAirtable(result).map((item: any) => ({
-            name: item.name,
-            occupation: item["ID (from occupation)"],
-            telegram_nickname: item.telegram_nickname,
-            Avatar: item.Avatar || [{ url: dummyUrl }],
-          }))
-        );
-      });
-    });
-    matchesSerivce
-      .getActionsByNickname(user.username)
-      .then((results: any) => {
-        setMyActions(unwrapAirtable(results).map((item: any) => item.actionTo));
-      })
-      .then(() => getScoredPairs(user.username))
-      .then((result) => {
-        console.log(result);
-        setUsers(getNormalizedPairs(result));
-      })
-      .then(() => {
-        setReady(true);
-      });
+    // matchesSerivce.getMatchesByNickname(user.username).then((result) => {
+    //   const input = unwrapAirtable(result).map((item: any) =>
+    //     item.userOne === user.username ? item.userTwo : item.userOne
+    //   );
+    //   getUsersByNick(input).then((result) => {
+    //     setDialogs(
+    //       unwrapAirtable(result).map((item: any) => ({
+    //         name: item.name,
+    //         occupation: item["ID (from occupation)"],
+    //         telegram_nickname: item.telegram_nickname,
+    //         Avatar: item.Avatar || [{ url: dummyUrl }],
+    //       }))
+    //     );
+    //   });
+    // });
+    // matchesSerivce
+    //   .getActionsByNickname(user.username)
+    //   .then((results: any) => {
+    //     setMyActions(unwrapAirtable(results).map((item: any) => item.actionTo));
+    //   })
+    //   .then(() => getScoredPairs(user.username))
+    //   .then((result) => {
+    //     setUsers(getNormalizedPairs(result));
+    //   })
+    //   .then(() => {
+    //     setReady(true);
+    //   });
   }, []);
 
   return (
@@ -106,19 +90,38 @@ const Matching = ({
         </TabList>
         <div className={"pt-5 pb-10"}>
           <TabPanel>
-            <Dialog users={dialogs} />
+            <Dialog user={user} />
           </TabPanel>
           <TabPanel>
-            {isDone && <EmptyState openDialogs={setTabIndex} />}
-            {!isDone && isReady && (
-              <Stepper
-                slides={slides || []}
-                onDone={() => {
-                  setDone(true);
-                }}
-                Empty={<EmptyState openDialogs={setTabIndex} />}
-              />
-            )}
+            {/*{isDone && <EmptyState openDialogs={setTabIndex} />}*/}
+            {/*{!isDone && isReady && (*/}
+            {/*  <Stepper*/}
+            {/*    slides={*/}
+            {/*      users*/}
+            {/*        .filter(*/}
+            {/*          (item: any) =>*/}
+            {/*            !myActions?.includes(item.telegram_nickname)*/}
+            {/*        )*/}
+            {/*        .map((targetUser: any) => {*/}
+            {/*          return {*/}
+            {/*            component: UserCard,*/}
+            {/*            hideDefaultControls: true,*/}
+            {/*            props: {*/}
+            {/*              user: targetUser,*/}
+            {/*              currentUser: user,*/}
+            {/*              pushToDialogs,*/}
+            {/*              removeUser,*/}
+            {/*            },*/}
+            {/*          };*/}
+            {/*        }) || []*/}
+            {/*    }*/}
+            {/*    onDone={() => {*/}
+            {/*      setDone(true);*/}
+            {/*    }}*/}
+            {/*    Empty={<EmptyState openDialogs={setTabIndex} />}*/}
+            {/*  />*/}
+            {/*)}*/}
+            <Cards user={user} setTabIndex={setTabIndex} dicts={dicts} />
           </TabPanel>
         </div>
       </Tabs>

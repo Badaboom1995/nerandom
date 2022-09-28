@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 Modal.setAppElement("#root");
 

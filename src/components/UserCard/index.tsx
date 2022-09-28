@@ -35,7 +35,6 @@ const UserCard = ({ data = {}, next }: any) => {
   } = data.user;
   data.user.Avatar = data.user.Avatar ? data.user.Avatar : [{ url: dummyUrl }];
 
-  console.log(data.user);
   const currentUser = data.currentUser.username;
   const [showSuccess, setSuccess] = useState(false);
   const [showSkip, setSkip] = useState(false);
@@ -45,13 +44,23 @@ const UserCard = ({ data = {}, next }: any) => {
       setSuccess(false);
       next();
     }, 100);
-    matchesSerivce.createAction(currentUser, telegram_nickname, "like");
+    matchesSerivce
+      .createAction(currentUser, telegram_nickname, "like")
+      .then(() => {
+        data.removeUser(telegram_nickname);
+      });
 
     matchesSerivce
       .checkIfMatch(telegram_nickname, currentUser)
       .then((result) => {
         if (unwrapAirtable(result)[0]) {
           matchesSerivce.create(currentUser, telegram_nickname).then(() => {
+            data.pushToDialogs({
+              name,
+              occupation,
+              Avatar: data.user.Avatar,
+              telegram_nickname,
+            });
             toast("Мэтч!", { autoClose: 1000 });
           });
         }

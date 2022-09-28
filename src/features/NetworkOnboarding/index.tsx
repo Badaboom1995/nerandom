@@ -32,7 +32,6 @@ const NetworkingOnboarding = () => {
     const wind: any = window;
     const telegramData = wind.Telegram?.WebApp;
     const user = telegramData?.initDataUnsafe.user;
-    console.log(telegramData, user);
     if (telegramData?.expand) {
       telegramData?.expand();
     }
@@ -73,6 +72,7 @@ const NetworkingOnboarding = () => {
       });
     });
   }, []);
+
   // TODO Развязать
   return (
     <div className={`${childFlexScreen} relative network`}>
