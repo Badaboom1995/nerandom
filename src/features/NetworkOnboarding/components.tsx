@@ -8,4 +8,8 @@ const Title = ({ children }: any) => (
   <MainTitle className={"border-b  mb-10 pb-10"}>{children}</MainTitle>
 );
 
-export { Text, Title };
+const BigTitle = ({ children }: any) => {
+  return <h2 className={"text-lg font-medium py-2"}>- {children}</h2>;
+};
+
+export { Text, Title, BigTitle };

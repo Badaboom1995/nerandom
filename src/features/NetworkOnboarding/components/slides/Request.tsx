@@ -1,9 +1,8 @@
 import CheckboxGroup from "../../../../components/ChooseGroup";
 import React from "react";
-import { Title } from "../../components";
-const BigTitle = ({ children }: any) => {
-  return <h2 className={"text-lg"}>{children}</h2>;
-};
+import { Title, BigTitle } from "../../components";
+import amplitude, { track } from "@amplitude/analytics-browser";
+
 const Request = ({ data }: any) => {
   const target = [
     { content: "Познакомиться с новыми людьми", value: "meet" },
@@ -24,13 +23,11 @@ const Request = ({ data }: any) => {
         groupName={"requestSkills"}
         label={<BigTitle>На какие темы интересно пообщаться?</BigTitle>}
         options={data.skills}
-        maxItems={10}
       />
       <CheckboxGroup
         groupName={"requestAreas"}
         label={<BigTitle>Какие области релевантны?</BigTitle>}
         options={data.areas}
-        maxItems={10}
       />
       {/*<CheckboxGroup*/}
       {/*  groupName={"areas"}*/}

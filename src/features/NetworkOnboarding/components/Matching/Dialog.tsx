@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import tg from "./assets/telegram.png";
+import tg from "../../assets/telegram.png";
 import matchesSerivce from "../../../../services/matches";
 import { unwrapAirtable } from "../../../../helpers/unwrap";
 import { getUsersByNick } from "../../../../services/users";

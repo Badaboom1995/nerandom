@@ -1,7 +1,7 @@
 import { childFlexScreen } from "../../../../config/mixClasses";
 import MainTitle from "../../../../components/typography";
 import Button from "../../../../components/Button";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Text = ({ children }: any) => {
   return <p className={"text-lg font-normal mb-5"}>{children}</p>;
@@ -11,6 +11,7 @@ const Title = ({ children }: any) => (
 );
 
 const Hello = ({ next, prev, user }: any) => {
+  // useEffect(() => {}, []);
   return (
     <div className={childFlexScreen}>
       <div className="text-center max-w-md grow">

@@ -48,7 +48,7 @@ const ChooseGroup = ({
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-        <div className={"overflow-scroll h-screen pb-20"}>
+        <div className={"overflow-scroll h-screen pb-20 bg-slate-200"}>
           {options?.map((item) => (
             <Choose
               id={`${groupName}-${item.value}`}

@@ -14,12 +14,15 @@ import makeRequest from "../../helpers/makeRequest";
 import { unwrapAirtable } from "../../helpers/unwrap";
 import Loader from "../../components/Loader";
 import Matching from "./components/Matching";
+import { getUserByTGNick } from "../../services/users";
 
 const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
   const [skills, setSkills]: any = useState(null);
   const [occupation, setOccupation]: any = useState(null);
   const [user, setUser]: any = useState(null);
+  const [isLoadingFinish, setLoadingStatus]: any = useState(false);
+  const [isDataSended, setIsDataSended]: any = useState(false);
 
   const getChooseData = (item: any) => {
     return item?.map((item: any) => ({
@@ -70,14 +73,18 @@ const NetworkingOnboarding = () => {
           setOccupation(sortByAlphabet(item));
         }
       });
+      getUserByTGNick(user.username).then((res: any) => {
+        setIsDataSended(res?.finishedOnboardings?.includes("networking"));
+        setLoadingStatus(true);
+      });
     });
   }, []);
 
   // TODO Развязать
   return (
     <div className={`${childFlexScreen} relative network`}>
-      {user && areas && skills && occupation ? (
-        localStorage.getItem("hegai_dataSended") === "yes" ? (
+      {isLoadingFinish ? (
+        isDataSended ? (
           <Matching dicts={{ skills, areas, occupation }} user={user} />
         ) : user && areas && skills && occupation ? (
           <Formik
@@ -88,6 +95,7 @@ const NetworkingOnboarding = () => {
               name: user?.first_name,
               lastName: user?.last_name,
               telegram_nickname: user?.username,
+              photoUrl: "",
             }}
           >
             {(props) => (
@@ -102,7 +110,6 @@ const NetworkingOnboarding = () => {
                     {
                       component: AboutOne,
                       props: {
-                        occupation: getChooseData(occupation),
                         choosedOccupationIds: props.values,
                         user,
                       },
@@ -112,6 +119,8 @@ const NetworkingOnboarding = () => {
                       props: {
                         areas: getChooseData(areas),
                         skills: getChooseData(skills),
+                        occupation: getChooseData(occupation),
+                        url: props.values.photoUrl,
                       },
                     },
                     {

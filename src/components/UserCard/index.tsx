@@ -12,8 +12,8 @@ import {
   Description,
   Container,
 } from "./styled";
-import cross from "../../features/NetworkOnboarding/components/Matching/assets/cross.svg";
-import like from "../../features/NetworkOnboarding/components/Matching/assets/like.svg";
+import cross from "../../features/NetworkOnboarding/assets/cross.svg";
+import like from "../../features/NetworkOnboarding/assets/like.svg";
 import matchesSerivce from "../../services/matches";
 import { toast } from "react-toastify";
 import { unwrapAirtable } from "../../helpers/unwrap";
@@ -84,16 +84,6 @@ const UserCard = ({ data = {}, next }: any) => {
 
   return data.user ? (
     <Container {...handlers}>
-      <div
-        className={`fixed top-0 -right-[30px] w-10 h-screen bg-orange-${
-          showSuccess ? "300" : "0"
-        } rounded transition transition-100`}
-      ></div>
-      <div
-        className={`fixed top-0 -left-[30px] w-10 h-screen  bg-slate-${
-          showSkip ? "600" : "0"
-        } rounded transition transition-100`}
-      ></div>
       <Header>
         <AvatarWrapper>
           <Avatar src={data.user.Avatar[0].url} alt="" />
@@ -128,14 +118,6 @@ const UserCard = ({ data = {}, next }: any) => {
         ))}
       </Tags>
       <div className="flex w-full z-10 justify-between fixed bottom-0 left-0">
-        {/*<button className={"bg-black active:bg-slate-900" + buttonClass}>*/}
-        {/* */}
-        {/*  Дизлайк*/}
-        {/*</button>*/}
-        {/*<button className={" active:bg-orange-800" + buttonClass}>*/}
-
-        {/*  Лайк*/}
-        {/*</button>*/}
         <button className={"ml-5  bg-black " + buttonClass} onClick={skipUser}>
           <img src={cross} alt="" className={"w-10 w-[70px]"} />
         </button>

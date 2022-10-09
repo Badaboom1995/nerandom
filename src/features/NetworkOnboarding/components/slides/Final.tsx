@@ -16,7 +16,6 @@ const Final = ({ next, prev }: any) => {
       confetti({
         particleCount: 200,
         spread: 100,
-
         origin: { y: 0.4 },
       });
     }

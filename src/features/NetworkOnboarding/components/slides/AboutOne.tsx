@@ -1,9 +1,23 @@
 import Input from "../../../../components/Input";
 import CheckboxGroup from "../../../../components/ChooseGroup";
-import React from "react";
+import React, { useState } from "react";
 import { Title } from "../../components";
+import * as filestack from "filestack-js";
+import uploadImg from "../../assets/upload.png";
+import { useField } from "formik";
 
 const AboutOne = ({ data }: any) => {
+  const [photo, setPhoto] = useState("");
+  const [field, meta, helpers] = useField("photoUrl");
+
+  const client = filestack.init("AFhZiYsO5RvyyJNHgDIq4z");
+  const options = {
+    onFileUploadFinished: (res: any) => {
+      setPhoto(res.url);
+      helpers.setValue(res.url);
+    },
+  };
+
   return (
     <div>
       <Title>(1/4) Расскажи немного о себе ⭐️</Title>
@@ -37,13 +51,31 @@ const AboutOne = ({ data }: any) => {
             { value: "female", content: "Ж" },
           ]}
         />
-        <CheckboxGroup
-          className="col-span-12"
-          groupName={"occupation"}
-          label={"Должность"}
-          options={data.occupation}
-          maxItems={5}
-        />
+        {!photo && (
+          <button
+            onClick={() => {
+              client.picker(options).open();
+            }}
+            className="w-[100px] p-5 mt-5 text-md bg-neutral-100 border-[1px] rounded-lg border-slate-200 flex flex-col items-center"
+          >
+            <img src={uploadImg} alt="" className={"w-[30px] h-[30px] mb-2"} />{" "}
+            <span>Фото</span>
+          </button>
+        )}
+        {photo && (
+          <button
+            className={"col-span-12"}
+            onClick={() => {
+              client.picker(options).open();
+            }}
+          >
+            <img
+              src={photo}
+              className={"w-[150px] rounded-lg border-[1px] border-slate-200"}
+              alt=""
+            />
+          </button>
+        )}
       </div>
     </div>
   );

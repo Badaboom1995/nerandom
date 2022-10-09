@@ -5,6 +5,7 @@ import Input from "../../../../components/Input";
 import ChooseGroup from "../../../../components/ChooseGroup";
 import makeRequest from "../../../../helpers/makeRequest";
 import { toast } from "react-toastify";
+import { getUserByTGNick } from "../../../../services/users";
 
 // todo move to formik submit level
 const LastCall = ({ next, prev, data }: any) => {
@@ -16,23 +17,46 @@ const LastCall = ({ next, prev, data }: any) => {
       return { content: curr.name, value: curr.id };
     });
   const [isLoading, setLoading] = useState(false);
+  const [acceptExternal, setExternal] = useState(true);
   const filteredAreas = idsToObjects("areas");
   const filteredSkills = idsToObjects("skills");
   const filteredOcupations = idsToObjects("occupation");
 
   const sendData = () => {
+    const wind: any = window;
+    const telegramData = wind.Telegram?.WebApp;
+    const user = telegramData?.initDataUnsafe.user;
     setLoading(true);
-    makeRequest
-      .post("Users", { records: [{ fields: data.values }] })
-      .then(() => {
-        next();
-      })
-      .catch((e) => {
-        toast.error(e.response.statusText);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    getUserByTGNick(user.username).then((res) => {
+      console.log(res);
+      console.log(data.values);
+      const url = data.values.photoUrl;
+      delete data.values.photoUrl;
+      makeRequest
+        .patch("Users", {
+          records: [
+            {
+              id: res.id,
+              fields: {
+                ...data.values,
+                Avatar: [{ url }],
+                readyForExternal: acceptExternal ? "yes" : "no",
+                finishedOnboardings: ["networking"],
+                chat_Id: res.chat_Id,
+              },
+            },
+          ],
+        })
+        .then(() => {
+          next();
+        })
+        .catch((e) => {
+          toast.error(e.response.statusText);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   };
 
   return (
@@ -86,6 +110,16 @@ const LastCall = ({ next, prev, data }: any) => {
         >
           Создать анкету
         </Button>
+        <label htmlFor="" className={"block pt-2 pb-5"}>
+          <input
+            type="checkbox"
+            checked={acceptExternal}
+            onChange={() => {
+              setExternal(!acceptExternal);
+            }}
+          />{" "}
+          Готов мэтчиться с внешними участниками
+        </label>
         <button
           className={"text-sm underline"}
           type="button"

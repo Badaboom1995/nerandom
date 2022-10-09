@@ -1,6 +1,6 @@
 import React from "react";
-import eye from "./assets/eye.svg";
-import tribe from "./assets/tribe.svg";
+import eye from "../../assets/eye.svg";
+import tribe from "../../assets/tribe.svg";
 
 const EmptyState = ({ openDialogs }: { openDialogs?: any }) => {
   return (

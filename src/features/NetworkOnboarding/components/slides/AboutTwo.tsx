@@ -1,27 +1,32 @@
 import CheckboxGroup from "../../../../components/ChooseGroup";
-import React from "react";
-import { Title } from "../../components";
-
-const BigTitle = ({ children }: any) => {
-  return <h2 className={"text-lg"}>{children}</h2>;
-};
+import React, { useEffect } from "react";
+import { Title, BigTitle } from "../../components";
 
 const AboutTwo = ({ data }: any) => {
-  console.log(data);
+  useEffect(() => {
+    console.log(data.areas);
+  }, [data.areas]);
+
   return (
     <div>
       <Title>(2/4) Расскажи немного о себе ⭐️</Title>
+
+      <CheckboxGroup
+        className="col-span-12"
+        groupName={"occupation"}
+        label={<BigTitle>Должность</BigTitle>}
+        options={data.occupation}
+        maxItems={8}
+      />
       <CheckboxGroup
         groupName={"skills"}
         label={<BigTitle>Чем можешь быть полезен?</BigTitle>}
         options={data.skills}
-        maxItems={8}
       />
       <CheckboxGroup
         groupName={"areas"}
         label={<BigTitle>В каких отраслях есть опыт?</BigTitle>}
         options={data.areas}
-        maxItems={8}
       />
       {/*<CheckboxGroup*/}
       {/*  groupName={"hobby"}*/}

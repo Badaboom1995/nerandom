@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import chat from "./assets/chat.svg";
-import coffee from "./assets/coffee.svg";
+import chat from "../../assets/chat.svg";
+import coffee from "../../assets/coffee.svg";
 import "./styles.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
