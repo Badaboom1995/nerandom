@@ -15,8 +15,6 @@ const Matching = ({
   dicts: { areas: any; skills: any; occupation: any };
   user: any;
 }) => {
-  //Comment on prod
-  // user.username = "@VictorSavyuk";
   const [tabIndex, setTabIndex] = useState(1);
 
   return (

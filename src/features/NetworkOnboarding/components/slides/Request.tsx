@@ -1,5 +1,5 @@
 import CheckboxGroup from "../../../../components/ChooseGroup";
-import React from "react";
+import React, { useEffect } from "react";
 import { Title, BigTitle } from "../../components";
 import amplitude, { track } from "@amplitude/analytics-browser";
 
@@ -11,6 +11,11 @@ const Request = ({ data }: any) => {
     { content: "Найти инвестора", value: "invest" },
     { content: "Найти ментора", value: "mentor" },
   ];
+
+  useEffect(() => {
+    track("onboarding-third_slide");
+  }, []);
+
   return (
     <div>
       <Title> (3/4) Сформируй запрос 🎯</Title>

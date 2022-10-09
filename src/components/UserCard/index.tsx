@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   Header,
   HeaderInfo,
@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { unwrapAirtable } from "../../helpers/unwrap";
 import { useSwipeable } from "react-swipeable";
 import { dummyUrl } from "../../config/consts";
+import { track } from "@amplitude/analytics-browser";
 
 const buttonClass =
   "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150  mx-5 mb-2 p-2 text-white text-lg uppercase font-medium mg-2 rounded-full flex items-center";
@@ -38,29 +39,20 @@ const UserCard = ({ data = {}, next }: any) => {
   const currentUser = data.currentUser.username;
   const [showSuccess, setSuccess] = useState(false);
   const [showSkip, setSkip] = useState(false);
+
   const likeUser = () => {
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
       next();
     }, 100);
-    matchesSerivce
-      .createAction(currentUser, telegram_nickname, "like")
-      .then(() => {
-        data.removeUser(telegram_nickname);
-      });
+    matchesSerivce.createAction(currentUser, telegram_nickname, "like");
 
     matchesSerivce
       .checkIfMatch(telegram_nickname, currentUser)
       .then((result) => {
         if (unwrapAirtable(result)[0]) {
           matchesSerivce.create(currentUser, telegram_nickname).then(() => {
-            data.pushToDialogs({
-              name,
-              occupation,
-              Avatar: data.user.Avatar,
-              telegram_nickname,
-            });
             toast("Мэтч!", { autoClose: 1000 });
           });
         }
@@ -78,8 +70,14 @@ const UserCard = ({ data = {}, next }: any) => {
   };
 
   const handlers = useSwipeable({
-    onSwipedLeft: (eventData) => skipUser(),
-    onSwipedRight: (eventData) => likeUser(),
+    onSwipedLeft: (eventData) => {
+      track("swipeLeft");
+      skipUser();
+    },
+    onSwipedRight: (eventData) => {
+      track("swipeRight");
+      likeUser();
+    },
   });
 
   return data.user ? (
@@ -99,7 +97,6 @@ const UserCard = ({ data = {}, next }: any) => {
             )}
             {occupation && <OccupationItem>{occupation[0]}</OccupationItem>}
           </Occupation>
-          {/*<Telegram>{telegram_nickname}</Telegram>*/}
         </HeaderInfo>
       </Header>
 
@@ -118,12 +115,21 @@ const UserCard = ({ data = {}, next }: any) => {
         ))}
       </Tags>
       <div className="flex w-full z-10 justify-between fixed bottom-0 left-0">
-        <button className={"ml-5  bg-black " + buttonClass} onClick={skipUser}>
+        <button
+          className={"ml-5  bg-black " + buttonClass}
+          onClick={() => {
+            track("pushDislike");
+            skipUser();
+          }}
+        >
           <img src={cross} alt="" className={"w-10 w-[70px]"} />
         </button>
         <button
           className={"mr-5 bg-[#FF7F0A] " + buttonClass}
-          onClick={likeUser}
+          onClick={() => {
+            track("pushLike");
+            likeUser();
+          }}
         >
           <img src={like} alt="" className={"w-10  w-[70px]"} />
         </button>

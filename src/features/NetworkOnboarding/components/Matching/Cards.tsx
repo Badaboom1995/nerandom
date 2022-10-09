@@ -7,12 +7,19 @@ import { unwrapAirtable, unwrapIdsToNames } from "../../../../helpers/unwrap";
 import { getScoredPairs } from "../../../../helpers/findMatch";
 import { dummyUrl } from "../../../../config/consts";
 import Skeleton from "react-loading-skeleton";
+import { track } from "@amplitude/analytics-browser";
 
 const Cards = ({ setTabIndex, user, dicts }: any) => {
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
   const [isReady, setReady] = useState(false);
   const [myActions, setMyActions]: any = useState(null);
+
+  const removeUserFromMatching = (telegram_nickname: string) => {
+    setUsers(
+      users.filter((item: any) => item.telegram_nickname !== telegram_nickname)
+    );
+  };
 
   const slides = users
     .filter((item: any) => !myActions?.includes(item.telegram_nickname))
@@ -49,12 +56,13 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
       })
       .then(() => {
         setReady(true);
+        track("finishLoadingCards");
       });
   };
 
   useEffect(() => {
+    track("startLoadingCards");
     getPairs();
-    console.log(isDone, isReady);
   }, []);
 
   return (

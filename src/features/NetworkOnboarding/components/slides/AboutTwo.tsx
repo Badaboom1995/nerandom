@@ -1,10 +1,11 @@
 import CheckboxGroup from "../../../../components/ChooseGroup";
 import React, { useEffect } from "react";
 import { Title, BigTitle } from "../../components";
+import { track } from "@amplitude/analytics-browser";
 
 const AboutTwo = ({ data }: any) => {
   useEffect(() => {
-    console.log(data.areas);
+    track("onboarding-first_slide");
   }, [data.areas]);
 
   return (

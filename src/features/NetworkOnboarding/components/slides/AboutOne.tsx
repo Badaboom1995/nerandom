@@ -1,10 +1,11 @@
 import Input from "../../../../components/Input";
 import CheckboxGroup from "../../../../components/ChooseGroup";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Title } from "../../components";
 import * as filestack from "filestack-js";
 import uploadImg from "../../assets/upload.png";
 import { useField } from "formik";
+import { track } from "@amplitude/analytics-browser";
 
 const AboutOne = ({ data }: any) => {
   const [photo, setPhoto] = useState("");
@@ -17,6 +18,10 @@ const AboutOne = ({ data }: any) => {
       helpers.setValue(res.url);
     },
   };
+
+  useEffect(() => {
+    track("onboarding-first_slide");
+  }, []);
 
   return (
     <div>

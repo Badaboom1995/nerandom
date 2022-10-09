@@ -6,9 +6,14 @@ import ChooseGroup from "../../../../components/ChooseGroup";
 import makeRequest from "../../../../helpers/makeRequest";
 import { toast } from "react-toastify";
 import { getUserByTGNick } from "../../../../services/users";
+import { track } from "@amplitude/analytics-browser";
 
 // todo move to formik submit level
 const LastCall = ({ next, prev, data }: any) => {
+  useEffect(() => {
+    track("onboarding-overview_slide");
+  }, []);
+
   const idsToObjects = (name: any) =>
     data?.values[name]?.map((item: any) => {
       const curr = data?.dicts[name]?.find(

@@ -4,6 +4,7 @@ import cup from "../../../../assets/cup.svg";
 import confetti from "canvas-confetti";
 import Button from "../../../../components/Button";
 import { Link } from "react-router-dom";
+import { track } from "@amplitude/analytics-browser";
 
 const Final = ({ next, prev }: any) => {
   const myCanvas = document.createElement("canvas");
@@ -19,9 +20,9 @@ const Final = ({ next, prev }: any) => {
         origin: { y: 0.4 },
       });
     }
+    track("onboarding-finish_slide");
     localStorage.setItem("hegai_dataSended", "yes");
   }, []);
-
   return (
     <div>
       <MainTitle className={"my-10 text-center text-orange-500"}>

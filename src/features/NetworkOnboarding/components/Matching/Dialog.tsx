@@ -4,9 +4,12 @@ import matchesSerivce from "../../../../services/matches";
 import { unwrapAirtable } from "../../../../helpers/unwrap";
 import { getUsersByNick } from "../../../../services/users";
 import { dummyUrl } from "../../../../config/consts";
+import { useRecoilState } from "recoil";
+import { textState } from "./store/dialogs";
+import { track } from "@amplitude/analytics-browser";
 
 const Dialog = ({ user }: any = []) => {
-  const [dialogs, setDialogs]: any = useState([]);
+  const [dialogs, setDialogs]: any = useRecoilState(textState);
   const [isLoaded, setLoaded]: any = useState(false);
 
   const getDialogs = () => {
@@ -23,12 +26,14 @@ const Dialog = ({ user }: any = []) => {
             Avatar: item.Avatar || [{ url: dummyUrl }],
           }))
         );
+        track("finishLoadingDialogs");
         setLoaded(true);
       });
     });
   };
 
   useEffect(() => {
+    track("startLoadingDialogs");
     getDialogs();
   }, []);
 
@@ -65,6 +70,7 @@ const Dialog = ({ user }: any = []) => {
                 "p-2 px-4 rounded bg-slate-200 w-14 active:bg-slate-400 transition"
               }
               onClick={() => {
+                track("goToDirect");
                 const win: any = window;
                 win.Telegram.WebApp.openTelegramLink(
                   `https://t.me/${telegram_nickname}`

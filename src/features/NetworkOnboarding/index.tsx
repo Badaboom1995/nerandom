@@ -15,6 +15,7 @@ import { unwrapAirtable } from "../../helpers/unwrap";
 import Loader from "../../components/Loader";
 import Matching from "./components/Matching";
 import { getUserByTGNick } from "../../services/users";
+import { track } from "@amplitude/analytics-browser";
 
 const NetworkingOnboarding = () => {
   const [areas, setAreas]: any = useState(null);
@@ -76,6 +77,7 @@ const NetworkingOnboarding = () => {
       getUserByTGNick(user.username).then((res: any) => {
         setIsDataSended(res?.finishedOnboardings?.includes("networking"));
         setLoadingStatus(true);
+        track("gotContent");
       });
     });
   }, []);
