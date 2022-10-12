@@ -20,6 +20,8 @@ import { unwrapAirtable } from "../../helpers/unwrap";
 import { useSwipeable } from "react-swipeable";
 import { dummyUrl } from "../../config/consts";
 import { track } from "@amplitude/analytics-browser";
+import { useRecoilState } from "recoil";
+import { likesCounter } from "../../features/NetworkOnboarding/components/Matching/store/dialogs";
 
 const buttonClass =
   "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150  mx-5 mb-2 p-2 text-white text-lg uppercase font-medium mg-2 rounded-full flex items-center";
@@ -39,10 +41,12 @@ const UserCard = ({ data = {}, next }: any) => {
   const currentUser = data.currentUser.username;
   const [showSuccess, setSuccess] = useState(false);
   const [showSkip, setSkip] = useState(false);
+  const [likes, setLikes]: any = useRecoilState(likesCounter);
 
   const likeUser = () => {
     setSuccess(true);
     setTimeout(() => {
+      setLikes(likes + 1);
       setSuccess(false);
       next();
     }, 100);
@@ -114,25 +118,31 @@ const UserCard = ({ data = {}, next }: any) => {
           </TagItem>
         ))}
       </Tags>
-      <div className="flex w-full z-10 justify-between fixed bottom-0 left-0">
-        <button
-          className={"ml-5  bg-black " + buttonClass}
-          onClick={() => {
-            track("pushDislike");
-            skipUser();
-          }}
-        >
-          <img src={cross} alt="" className={"w-10 w-[70px]"} />
-        </button>
-        <button
-          className={"mr-5 bg-[#FF7F0A] " + buttonClass}
-          onClick={() => {
-            track("pushLike");
-            likeUser();
-          }}
-        >
-          <img src={like} alt="" className={"w-10  w-[70px]"} />
-        </button>
+      <div className="flex w-full z-10 justify-between items-center fixed bottom-0 left-0">
+        <div>
+          <button
+            className={"ml-5  bg-black " + buttonClass}
+            onClick={() => {
+              track("pushDislike");
+              skipUser();
+            }}
+          >
+            <img src={cross} alt="" className={"w-10 w-[70px]"} />
+          </button>
+        </div>
+
+        <div className={"flex flex-col items-center"}>
+          <span className={"text-lg font-bold"}>{5 - likes}</span>
+          <button
+            className={"mr-5 bg-[#FF7F0A] flex flex-col" + buttonClass}
+            onClick={() => {
+              track("pushLike");
+              likeUser();
+            }}
+          >
+            <img src={like} alt="" className={"w-10  w-[70px]"} />
+          </button>
+        </div>
       </div>
     </Container>
   ) : (

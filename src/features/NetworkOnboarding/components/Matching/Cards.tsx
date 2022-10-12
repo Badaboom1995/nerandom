@@ -8,12 +8,18 @@ import { getScoredPairs } from "../../../../helpers/findMatch";
 import { dummyUrl } from "../../../../config/consts";
 import Skeleton from "react-loading-skeleton";
 import { track } from "@amplitude/analytics-browser";
+import { useRecoilState } from "recoil";
+import { likesCounter } from "./store/dialogs";
+import * as dayjs from "dayjs";
+
+const day: any = dayjs;
 
 const Cards = ({ setTabIndex, user, dicts }: any) => {
   const [users, setUsers]: any = useState([]);
   const [isDone, setDone] = useState(false);
   const [isReady, setReady] = useState(false);
   const [myActions, setMyActions]: any = useState(null);
+  const [likes, setLikes]: any = useRecoilState(likesCounter);
 
   const removeUserFromMatching = (telegram_nickname: string) => {
     setUsers(
@@ -45,9 +51,21 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
   };
 
   const getPairs = () => {
+    let gotLikes = 0;
     matchesSerivce
       .getActionsByNickname(user.username)
       .then((results: any) => {
+        unwrapAirtable(results)
+          .filter((item: any) => item.type === "like")
+          .forEach((item: any) => {
+            if (
+              day(item.createdTime).format("DD/MM/YYYY") ===
+              day().format("DD/MM/YYYY")
+            ) {
+              gotLikes++;
+            }
+          });
+        setLikes(gotLikes);
         setMyActions(unwrapAirtable(results).map((item: any) => item.actionTo));
       })
       .then(() => getScoredPairs(user.username))
@@ -67,8 +85,8 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
 
   return (
     <div>
-      {isDone && <EmptyState openDialogs={setTabIndex} />}
-      {!isDone && isReady ? (
+      {isDone || (likes > 4 && <EmptyState openDialogs={setTabIndex} />)}
+      {!isDone && isReady && likes < 4 ? (
         <Stepper
           slides={slides || []}
           onDone={() => {

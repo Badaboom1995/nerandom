@@ -74,7 +74,7 @@ const NetworkingOnboarding = () => {
           setOccupation(sortByAlphabet(item));
         }
       });
-      getUserByTGNick(user.username).then((res: any) => {
+      getUserByTGNick(user?.username).then((res: any) => {
         setIsDataSended(res?.finishedOnboardings?.includes("networking"));
         setLoadingStatus(true);
         track("gotContent");
