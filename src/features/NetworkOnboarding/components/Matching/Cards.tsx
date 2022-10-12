@@ -79,6 +79,10 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
   };
 
   useEffect(() => {
+    console.log(likes);
+  }, [likes]);
+
+  useEffect(() => {
     track("startLoadingCards");
     getPairs();
   }, []);
@@ -86,7 +90,7 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
   return (
     <div>
       {isDone || (likes > 4 && <EmptyState openDialogs={setTabIndex} />)}
-      {!isDone && isReady && likes < 4 ? (
+      {!isDone && isReady && likes < 5 ? (
         <Stepper
           slides={slides || []}
           onDone={() => {
