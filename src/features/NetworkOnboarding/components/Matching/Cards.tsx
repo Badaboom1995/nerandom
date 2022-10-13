@@ -21,14 +21,16 @@ const Cards = ({ setTabIndex, user, dicts }: any) => {
   const [myActions, setMyActions]: any = useState(null);
   const [likes, setLikes]: any = useRecoilState(likesCounter);
 
-  const removeUserFromMatching = (telegram_nickname: string) => {
-    setUsers(
-      users.filter((item: any) => item.telegram_nickname !== telegram_nickname)
-    );
-  };
-
   const slides = users
-    .filter((item: any) => !myActions?.includes(item.telegram_nickname))
+    .filter((item: any) => {
+      const finishedOnboardings = item.finishedOnboardings
+        ? item.finishedOnboardings
+        : [];
+      return (
+        !myActions?.includes(item.telegram_nickname) &&
+        finishedOnboardings[0] === "networking"
+      );
+    })
     .map((targetUser: any) => {
       return {
         component: UserCard,

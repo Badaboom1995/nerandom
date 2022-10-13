@@ -7,5 +7,5 @@ export const textState = atom({
 
 export const likesCounter = atom({
   key: "likesCounter", // unique ID (with respect to other atoms/selectors)
-  default: 0, // default value (aka initial value)
+  default: 100, // default value (aka initial value)
 });

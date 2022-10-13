@@ -4,7 +4,10 @@ import { unwrapAirtable } from "../helpers/unwrap";
 export const getUserByTGNick = (nick: string): Promise<any> =>
   makeRequest
     .get(`Users?&filterByFormula=Search('@${nick}', {telegram_nickname})`)
-    .then((result) => unwrapAirtable(result)[0]);
+    .then((result) => {
+      console.log(unwrapAirtable(result), result);
+      return unwrapAirtable(result)[0];
+    });
 
 export const getUsersByNick = (nicksArray: string[]): Promise<any> => {
   const formula = nicksArray

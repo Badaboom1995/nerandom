@@ -12,7 +12,6 @@ const Final = ({ next, prev }: any) => {
   wrapper?.appendChild(myCanvas);
 
   useEffect(() => {
-    localStorage.setItem("isOnboardingDone", "true");
     if (localStorage.getItem("hegai_dataSended") !== "yes") {
       confetti({
         particleCount: 200,
@@ -21,7 +20,6 @@ const Final = ({ next, prev }: any) => {
       });
     }
     track("onboarding-finish_slide");
-    localStorage.setItem("hegai_dataSended", "yes");
   }, []);
   return (
     <div>

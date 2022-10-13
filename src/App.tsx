@@ -10,23 +10,23 @@ import { RecoilRoot } from "recoil";
 import { track, init } from "@amplitude/analytics-browser";
 
 Modal.setAppElement("#root");
-
-const wind: any = window;
-wind.Telegram = {
-  WebApp: {
-    expand: () => {
-      console.log("expanded");
-    },
-    initDataUnsafe: {
-      user: {
-        username: "badavoo",
-        firstname: "Alex",
-        lastname: "Belov",
-        photoUrl: dummyUrl,
-      },
-    },
-  },
-};
+//
+// const wind: any = window;
+// wind.Telegram = {
+//   WebApp: {
+//     expand: () => {
+//       console.log("expanded");
+//     },
+//     initDataUnsafe: {
+//       user: {
+//         username: "badavoo",
+//         firstname: "Alex",
+//         lastname: "Belov",
+//         photoUrl: dummyUrl,
+//       },
+//     },
+//   },
+// };
 
 function App() {
   const [isLoading, setLoading] = useState(false);
