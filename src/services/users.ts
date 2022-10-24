@@ -17,3 +17,9 @@ export const getUsersByNick = (nicksArray: string[]): Promise<any> => {
     .slice(0, -1);
   return makeRequest.get(`Users?&filterByFormula=OR(${formula})`);
 };
+
+export const getAllUsers = async (): Promise<any> => {
+  const users = await makeRequest.get("Users");
+  const users2 = await makeRequest.get(`Users?offset=${users.data.offset}`);
+  return [...unwrapAirtable(users), ...unwrapAirtable(users2)];
+};

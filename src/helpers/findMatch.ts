@@ -1,9 +1,7 @@
-import makeRequest from "./makeRequest";
-import { unwrapAirtable } from "./unwrap";
+import { getAllUsers } from "../services/users";
 
 export const getScoredPairs = (currentUserNickname: string) => {
-  return makeRequest.get("Users").then((results) => {
-    const unwrappedResult = unwrapAirtable(results);
+  return getAllUsers().then((unwrappedResult) => {
     //todo create current user
     const currentUser = unwrappedResult.find(
       (item: any) => item.telegram_nickname === currentUserNickname
