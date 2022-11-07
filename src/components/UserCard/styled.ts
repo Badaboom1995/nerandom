@@ -32,7 +32,7 @@ const AvatarWrapper: any = tw.div`
    mb-4
    mr-2
 `;
-const Avatar: any = tw.img`
+const AvatarImg: any = tw.img`
    w-full
    rounded-full
    
@@ -94,7 +94,7 @@ const TagItem: any = tw.span`
 export {
   Header,
   HeaderInfo,
-  Avatar,
+  AvatarImg,
   AvatarWrapper,
   Name,
   Tags,

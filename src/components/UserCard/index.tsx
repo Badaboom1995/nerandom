@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Header,
   HeaderInfo,
-  Avatar,
+  AvatarImg,
   AvatarWrapper,
   Name,
   Tags,
@@ -12,16 +12,15 @@ import {
   Description,
   Container,
 } from "./styled";
-import cross from "../../features/NetworkOnboarding/assets/cross.svg";
-import like from "../../features/NetworkOnboarding/assets/like.svg";
+import cross from "features/Networking/assets/cross.svg";
+import like from "features/Networking/assets/like.svg";
 import matchesSerivce from "../../services/matches";
 import { toast } from "react-toastify";
-import { unwrapAirtable } from "../../helpers/unwrap";
+import { unwrapAirtable } from "../../utils/unwrap";
 import { useSwipeable } from "react-swipeable";
-import { dummyUrl } from "../../config/consts";
 import { track } from "@amplitude/analytics-browser";
 import { useRecoilState } from "recoil";
-import { likesCounter } from "../../features/NetworkOnboarding/components/Matching/store/dialogs";
+import { matchingCardsAtom } from "features/Networking/components/Matching/recoil/cards";
 
 const buttonClass =
   "drop-shadow-xl active:drop-shadow-sm active:scale-90 transition-all duration-150  mx-5 mb-2 p-2 text-white text-lg uppercase font-medium mg-2 rounded-full flex items-center";
@@ -29,26 +28,33 @@ const buttonClass =
 const UserCard = ({ data = {}, next }: any) => {
   const {
     name,
-    occupation,
+    occupationsValues,
     telegram_nickname,
-    skills,
-    areas,
+    skillsValues,
+    areasValues,
     about,
     lastname,
+    Avatar,
+    chat_Id,
   } = data.user;
-  data.user.Avatar = data.user.Avatar ? data.user.Avatar : [{ url: dummyUrl }];
+  const rawData = { ...data };
 
-  const currentUser = data.currentUser.username;
-  const [showSuccess, setSuccess] = useState(false);
-  const [showSkip, setSkip] = useState(false);
-  const [likes, setLikes]: any = useRecoilState(likesCounter);
+  const currentUser = data.currentUser.fields.telegram_nickname;
+  const currentUserId = data.currentUser.fields.chat_Id;
+  const [cards, setCardsState]: any = useRecoilState(matchingCardsAtom);
+
+  const increaseSliderCounter = () => {
+    setCardsState({ ...cards, slidesIndex: cards.slidesIndex + 1 });
+  };
 
   const likeUser = () => {
-    setSuccess(true);
     setTimeout(() => {
-      setLikes(likes + 1);
-      setSuccess(false);
       next();
+      increaseSliderCounter();
+      setCardsState({
+        ...cards,
+        likes: cards.likes - 1,
+      });
     }, 100);
     matchesSerivce.createAction(currentUser, telegram_nickname, "like");
 
@@ -58,16 +64,16 @@ const UserCard = ({ data = {}, next }: any) => {
         if (unwrapAirtable(result)[0]) {
           matchesSerivce.create(currentUser, telegram_nickname).then(() => {
             toast("Мэтч!", { autoClose: 1000 });
+            // matchesSerivce.sendNotification(currentUserId, chat_Id);
           });
         }
       });
   };
 
   const skipUser = () => {
-    setSkip(true);
     setTimeout(() => {
-      setSkip(false);
       next();
+      increaseSliderCounter();
     }, 100);
     matchesSerivce.createAction(currentUser, telegram_nickname, "dislike");
     next();
@@ -84,11 +90,15 @@ const UserCard = ({ data = {}, next }: any) => {
     },
   });
 
-  return data.user ? (
+  useEffect(() => {
+    console.log(rawData);
+  }, []);
+
+  return (
     <Container {...handlers}>
       <Header>
         <AvatarWrapper>
-          <Avatar src={data.user.Avatar[0].url} alt="" />
+          <AvatarImg src={Avatar} alt="" />
         </AvatarWrapper>
 
         <HeaderInfo>
@@ -96,23 +106,26 @@ const UserCard = ({ data = {}, next }: any) => {
             {name} {lastname}
           </Name>
           <Occupation>
-            {!occupation?.length && (
+            {!occupationsValues?.length && (
               <OccupationItem>🥸 Должность неизвестна</OccupationItem>
             )}
-            {occupation && <OccupationItem>{occupation[0]}</OccupationItem>}
+            {occupationsValues && (
+              <OccupationItem>{occupationsValues[0]}</OccupationItem>
+            )}
           </Occupation>
         </HeaderInfo>
       </Header>
-
       <Description>{about}</Description>
       <Tags>
-        {!skills?.length && !areas?.length && <TagItem>???</TagItem>}
-        {skills?.map((item: any) => (
+        {!skillsValues?.length && !areasValues?.length && (
+          <TagItem>???</TagItem>
+        )}
+        {skillsValues?.map((item: any) => (
           <TagItem key={item} className={`bg-${"slate"}-400`}>
             {item}
           </TagItem>
         ))}
-        {areas?.map((item: any) => (
+        {areasValues?.map((item: any) => (
           <TagItem key={item} className={`bg-${"slate"}-400`}>
             {item}
           </TagItem>
@@ -130,9 +143,8 @@ const UserCard = ({ data = {}, next }: any) => {
             <img src={cross} alt="" className={"w-10 w-[70px]"} />
           </button>
         </div>
-
         <div className={"flex flex-col items-center"}>
-          <span className={"text-lg font-bold"}>{5 - likes}</span>
+          <span className={"text-lg font-bold"}>{cards.likes}</span>
           <button
             className={"mr-5 bg-[#FF7F0A] flex flex-col" + buttonClass}
             onClick={() => {
@@ -145,8 +157,6 @@ const UserCard = ({ data = {}, next }: any) => {
         </div>
       </div>
     </Container>
-  ) : (
-    <div>loading...</div>
   );
 };
 

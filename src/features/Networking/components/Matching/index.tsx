@@ -8,13 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import Dialog from "./Dialog";
 import Cards from "./Cards";
 
-const Matching = ({
-  dicts,
-  user,
-}: {
-  dicts: { areas: any; skills: any; occupation: any };
-  user: any;
-}) => {
+const Matching = () => {
   const [tabIndex, setTabIndex] = useState(1);
 
   return (
@@ -40,10 +34,10 @@ const Matching = ({
         </TabList>
         <div className={"pt-5 pb-10"}>
           <TabPanel>
-            <Dialog user={user} />
+            <Dialog />
           </TabPanel>
           <TabPanel>
-            <Cards user={user} setTabIndex={setTabIndex} dicts={dicts} />
+            <Cards setTabIndex={setTabIndex} />
           </TabPanel>
         </div>
       </Tabs>

@@ -10,20 +10,21 @@ import AboutTwo from "./components/slides/AboutTwo";
 import Request from "./components/slides/Request";
 import LastCall from "./components/slides/LastCall";
 import Final from "./components/slides/Final";
-import makeRequest from "../../helpers/makeRequest";
-import { unwrapAirtable } from "../../helpers/unwrap";
 import Loader from "../../components/Loader";
 import Matching from "./components/Matching";
 import { getUserByTGNick } from "../../services/users";
 import { track } from "@amplitude/analytics-browser";
+import { useDictsBootstrap } from "../../recoil/dicts/dictsActions";
+import userAtom from "../../recoil/user/userAtom";
+import { useRecoilValue } from "recoil";
 
 const NetworkingOnboarding = () => {
-  const [areas, setAreas]: any = useState(null);
-  const [skills, setSkills]: any = useState(null);
-  const [occupation, setOccupation]: any = useState(null);
+  const dicts = useDictsBootstrap();
+  const { skills, areas, occupation } = dicts;
+
   const [user, setUser]: any = useState(null);
   const [isLoadingFinish, setLoadingStatus]: any = useState(false);
-  const [isDataSended, setIsDataSended]: any = useState(false);
+  const [isDataSent, setIsDataSent]: any = useState(false);
 
   const getChooseData = (item: any) => {
     return item?.map((item: any) => ({
@@ -33,12 +34,19 @@ const NetworkingOnboarding = () => {
   };
 
   useEffect(() => {
+    if (dicts.fulfilled) {
+      setLoadingStatus(true);
+    }
+  }, [dicts.loading]);
+
+  useEffect(() => {
     const wind: any = window;
     const telegramData = wind.Telegram?.WebApp;
     const user = telegramData?.initDataUnsafe.user;
     if (telegramData?.expand) {
       telegramData?.expand();
     }
+
     setUser({
       username: user?.username ? `@${user?.username}` : "",
       first_name: user?.first_name,
@@ -46,52 +54,25 @@ const NetworkingOnboarding = () => {
       photo_url: user?.photo_url,
     });
 
-    const getAreas = makeRequest.get(
-      "Areas?&filterByFormula=Search('1', {level})"
-    );
-    const getSkills = makeRequest.get(
-      "Skills?&filterByFormula=Search('1', {level})"
-    );
-    const getOccupations = makeRequest.get("Occupation").then((pageOne) => {
-      return makeRequest
-        .get(`Occupation?offset=${pageOne.data.offset}`)
-        .then((pageTwo) => {
-          return [...unwrapAirtable(pageOne), ...unwrapAirtable(pageTwo)];
-        });
+    getUserByTGNick(user?.username).then((res: any) => {
+      setIsDataSent(res?.finishedOnboardings?.includes("networking"));
+      track("gotContent");
     });
 
     const sortByAlphabet = (items: any) =>
       items.sort((prev: any, next: any) => (prev.name > next.name ? 1 : -1));
-    Promise.all([getAreas, getSkills, getOccupations]).then(function (values) {
-      values.forEach((item, index) => {
-        if (index === 0) {
-          setAreas(sortByAlphabet(unwrapAirtable(item)));
-        }
-        if (index === 1) {
-          setSkills(sortByAlphabet(unwrapAirtable(item)));
-        }
-        if (index === 2) {
-          setOccupation(sortByAlphabet(item));
-        }
-      });
-      getUserByTGNick(user?.username).then((res: any) => {
-        setIsDataSended(res?.finishedOnboardings?.includes("networking"));
-        setLoadingStatus(true);
-        track("gotContent");
-      });
-    });
   }, []);
 
   // TODO Развязать
   return (
     <div className={`${childFlexScreen} relative network`}>
       {isLoadingFinish ? (
-        isDataSended ? (
-          <Matching dicts={{ skills, areas, occupation }} user={user} />
-        ) : user && areas && skills && occupation ? (
+        isDataSent ? (
+          <Matching />
+        ) : user && dicts.fulfilled ? (
           <Formik
             onSubmit={(results) => {
-              console.log(results);
+              console.log("");
             }}
             initialValues={{
               name: user?.first_name,

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Button from "../../../../components/Button";
-import { Title } from "../../components";
-import Input from "../../../../components/Input";
-import ChooseGroup from "../../../../components/ChooseGroup";
-import makeRequest from "../../../../helpers/makeRequest";
+import Button from "components/Button";
+import { Title } from "../components";
+import Input from "components/Input";
+import ChooseGroup from "components/ChooseGroup";
+import makeRequest from "utils/makeRequest";
 import { toast } from "react-toastify";
-import { getUserByTGNick } from "../../../../services/users";
+import { getUserByTGNick } from "services/users";
 import { track } from "@amplitude/analytics-browser";
 
 // todo move to formik submit level
@@ -33,8 +33,6 @@ const LastCall = ({ next, prev, data }: any) => {
     const user = telegramData?.initDataUnsafe.user;
     setLoading(true);
     getUserByTGNick(user.username).then((res) => {
-      console.log(res);
-      console.log(data.values);
       const url = data.values.photoUrl;
       delete data.values.photoUrl;
       makeRequest

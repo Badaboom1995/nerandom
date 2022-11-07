@@ -1,8 +1,15 @@
-import React from "react";
-import NetworkingOnboarding from "../features/NetworkOnboarding";
+import React, { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import userAtom from "../recoil/user/userAtom";
+import Matching from "../features/Networking/components/Matching";
+import NetworkingOnboarding from "../features/NetworkingOnboarding";
 
-const Networking = () => {
-  return <NetworkingOnboarding />;
+const NetworkingPage = () => {
+  const user = useRecoilValue(userAtom);
+  const isOnboardingDone =
+    user.fields.finishedOnboardings?.includes("networking");
+
+  return isOnboardingDone ? <Matching /> : <NetworkingOnboarding />;
 };
 
-export default Networking;
+export default NetworkingPage;

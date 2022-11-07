@@ -1,35 +1,42 @@
 import React, { useState, useEffect } from "react";
 import tg from "../../assets/telegram.png";
 import matchesSerivce from "../../../../services/matches";
-import { unwrapAirtable } from "../../../../helpers/unwrap";
+import { unwrapAirtable } from "../../../../utils/unwrap";
 import { getUsersByNick } from "../../../../services/users";
 import { dummyUrl } from "../../../../config/consts";
-import { useRecoilState } from "recoil";
-import { textState } from "./store/dialogs";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { textState } from "./recoil/dialogs";
 import { track } from "@amplitude/analytics-browser";
+import userAtom from "../../../../recoil/user/userAtom";
 
-const Dialog = ({ user }: any = []) => {
+const Dialog = () => {
   const [dialogs, setDialogs]: any = useRecoilState(textState);
+  const user: any = useRecoilValue(userAtom);
   const [isLoaded, setLoaded]: any = useState(false);
 
   const getDialogs = () => {
-    matchesSerivce.getMatchesByNickname(user.username).then((result) => {
-      const input = unwrapAirtable(result).map((item: any) =>
-        item.userOne === user.username ? item.userTwo : item.userOne
-      );
-      getUsersByNick(input).then((result) => {
-        setDialogs(
-          unwrapAirtable(result).map((item: any) => ({
-            name: item.name,
-            occupation: item["ID (from occupation)"],
-            telegram_nickname: item.telegram_nickname,
-            Avatar: item.Avatar || [{ url: dummyUrl }],
-          }))
+    matchesSerivce
+      .getMatchesByNickname(user.fields.telegram_nickname)
+      .then((result) => {
+        const input = unwrapAirtable(result).map((item: any) =>
+          item.userOne === user.fields.telegram_nickname
+            ? item.userTwo
+            : item.userOne
         );
-        track("finishLoadingDialogs");
-        setLoaded(true);
+        console.log(input);
+        getUsersByNick(input).then((result) => {
+          setDialogs(
+            unwrapAirtable(result).map((item: any) => ({
+              name: item.name,
+              occupation: item["ID (from occupation)"],
+              telegram_nickname: item.telegram_nickname,
+              Avatar: item.Avatar || [{ url: dummyUrl }],
+            }))
+          );
+          track("finishLoadingDialogs");
+          setLoaded(true);
+        });
       });
-    });
   };
 
   useEffect(() => {

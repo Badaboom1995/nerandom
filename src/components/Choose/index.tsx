@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Field } from "formik";
-import getRandomColor from "../../helpers/getRandomColor";
+import getRandomColor from "../../utils/getRandomColor";
 
 const Choose = ({
   id,

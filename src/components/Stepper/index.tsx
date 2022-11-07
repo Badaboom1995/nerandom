@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import Button from "../Button";
+import EmptyState from "../../features/Networking/components/Matching/EmptyState";
 
 type Slide = {
   component: any;
@@ -13,6 +14,7 @@ interface IStepper {
   slides: Slide[];
   onDone?: (p: void) => void;
   Empty?: any;
+  activeIndex?: number;
   slideChangeTimeout?: number;
 }
 
@@ -21,13 +23,16 @@ const Stepper = ({
   onDone,
   slideChangeTimeout = 300,
   Empty,
+  activeIndex,
 }: IStepper) => {
-  const [stepNumber, setStepNumber] = useState(0);
+  const [stepNumber, setStepNumber] = useState(activeIndex || 0);
   const [CurrentSlide, setSlide]: any = useState(null);
+  const [isDone, setDone]: any = useState(false);
 
   useEffect(() => {
     setSlide(slides[stepNumber]);
     window.scrollTo(0, 0);
+    console.log(slides, stepNumber, slides[stepNumber]);
   }, [stepNumber]);
 
   const nextStep = () => {
@@ -36,7 +41,7 @@ const Stepper = ({
         setStepNumber(stepNumber + 1);
       }, slideChangeTimeout);
     } else {
-      onDone && onDone();
+      setDone(true);
     }
   };
   const prevStep = () => {
@@ -45,20 +50,25 @@ const Stepper = ({
     }
   };
 
+  if (!slides.length) return <EmptyState />;
   return (
-    <div className={"flex flex-col grow"}>
+    <div
+      className={`flex flex-col grow max-h-fit ${
+        !CurrentSlide?.hideDefaultControls && "pb-14"
+      }`}
+    >
       <div className="flex-grow flex flex-col">
-        {CurrentSlide && slides && (
+        {CurrentSlide && slides && !isDone && (
           <CurrentSlide.component
             next={nextStep}
             prev={prevStep}
             data={CurrentSlide.props}
           />
         )}
-        {!slides.length && Empty}
       </div>
+      {isDone && Empty}
       {!CurrentSlide?.hideDefaultControls && !!slides.length && (
-        <div className="flex justify-between">
+        <div className="flex justify-between fixed w-full bg-white p-4 left-0 bottom-0 shadow shadow-black">
           <button className="" onClick={prevStep}>
             Назад
           </button>
