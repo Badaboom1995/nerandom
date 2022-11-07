@@ -69,7 +69,7 @@ const Stepper = ({
       {isDone && Empty}
       {!CurrentSlide?.hideDefaultControls && !!slides.length && (
         <div className="flex justify-between fixed w-full bg-white p-4 left-0 bottom-0 shadow shadow-black">
-          <button className="" onClick={prevStep}>
+          <button className="" onClick={prevStep} type={"button"}>
             Назад
           </button>
           <Button className="w-20" onClick={nextStep}>

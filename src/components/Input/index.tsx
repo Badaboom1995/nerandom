@@ -36,6 +36,7 @@ const Input = ({
       ) : (
         <Field
           as={"input"}
+          type={"text"}
           name={name}
           className={styles}
           placeholder={placeholder}

@@ -58,6 +58,7 @@ const AboutOne = ({ data }: any) => {
         />
         {!photo && (
           <button
+            type={"button"}
             onClick={() => {
               client.picker(options).open();
             }}
@@ -81,6 +82,7 @@ const AboutOne = ({ data }: any) => {
             />
           </button>
         )}
+        <button className={"absolute -left-100"}></button>
       </div>
     </div>
   );

@@ -35,6 +35,9 @@ const NetworkingOnboarding = () => {
       <Formik
         onSubmit={(results) => {
           console.log(results);
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          document?.activeElement?.blur();
         }}
         initialValues={{
           name: user.fields?.firstname,
