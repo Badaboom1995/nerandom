@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRecoilValue } from "recoil";
 import userAtom from "../recoil/user/userAtom";
 import Matching from "../features/Networking/components/Matching";

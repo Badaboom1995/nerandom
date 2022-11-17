@@ -131,10 +131,10 @@ const UserCard = ({ data = {}, next }: any) => {
           </TagItem>
         ))}
       </Tags>
-      <div className="flex w-full z-10 justify-between items-center fixed bottom-0 left-0">
+      <div className="flex w-full z-1 justify-between items-center fixed bottom-0 left-0">
         <div>
           <button
-            className={"ml-5  bg-black " + buttonClass}
+            className={"ml-5 -mb-4 bg-black " + buttonClass}
             onClick={() => {
               track("pushDislike");
               skipUser();

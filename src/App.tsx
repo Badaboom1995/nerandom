@@ -12,21 +12,21 @@ import { useLoadUser } from "./recoil/user/userActions";
 Modal.setAppElement("#root");
 
 const wind: any = window;
-wind.Telegram = {
-  WebApp: {
-    expand: () => {
-      return;
-    },
-    initDataUnsafe: {
-      user: {
-        username: "badavoo",
-        firstname: "Alex",
-        lastname: "Belov",
-        photoUrl: dummyUrl,
-      },
-    },
-  },
-};
+// wind.Telegram = {
+//   WebApp: {
+//     expand: () => {
+//       return;
+//     },
+//     initDataUnsafe: {
+//       user: {
+//         username: "AndreyNaz",
+//         firstname: "Alex",
+//         lastname: "Belov",
+//         photoUrl: dummyUrl,
+//       },
+//     },
+//   },
+// };
 
 function App() {
   wind.Telegram.WebApp.expand();

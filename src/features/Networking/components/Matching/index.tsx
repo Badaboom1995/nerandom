@@ -7,9 +7,11 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import Dialog from "./Dialog";
 import Cards from "./Cards";
+import { useDictsBootstrap } from "../../../../recoil/dicts/dictsActions";
 
 const Matching = () => {
   const [tabIndex, setTabIndex] = useState(1);
+  const dicts = useDictsBootstrap();
 
   return (
     <div className={""}>

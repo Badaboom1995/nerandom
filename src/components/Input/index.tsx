@@ -31,7 +31,7 @@ const Input = ({
           cols={12}
           className={styles}
           placeholder={placeholder}
-          value={meta?.value}
+          value={value || meta?.value || value}
         />
       ) : (
         <Field
@@ -40,7 +40,7 @@ const Input = ({
           name={name}
           className={styles}
           placeholder={placeholder}
-          value={meta?.value}
+          value={value || meta?.value || value}
         />
       )}
     </div>
