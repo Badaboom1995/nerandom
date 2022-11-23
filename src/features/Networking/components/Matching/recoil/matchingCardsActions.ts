@@ -72,7 +72,6 @@ export const useLoadBatch = (telegram_nickname: string) => {
     const likes: any = await matchesSerivce.countTodayLikesFrom(
       telegram_nickname
     );
-
     setCardsState({
       ...state,
       likes: 10 - likes,

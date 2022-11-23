@@ -8,6 +8,9 @@ export const getUserByTGNick = (nick: string): Promise<any> =>
       return unwrapAirtable(result)[0];
     });
 
+export const patchUser = (id: any, fields: any): Promise<any> =>
+  makeRequest.patch(`Users`, { records: [{ id, fields }] });
+
 export const getUsersByNick = (nicksArray: string[]): Promise<any> => {
   const formula = nicksArray
     .reduce((acc: any, curr: any) => {

@@ -1,5 +1,6 @@
 export interface IUser {
   fields: {
+    id?: string;
     telegram_nickname: string;
     firstname?: string;
     lastName?: string;

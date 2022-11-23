@@ -6,6 +6,7 @@ import NetworkingOnboarding from "../features/NetworkingOnboarding";
 
 const NetworkingPage = () => {
   const user = useRecoilValue(userAtom);
+  console.log(user);
   const isOnboardingDone =
     user.fields.finishedOnboardings?.includes("networking");
 
