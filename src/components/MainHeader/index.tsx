@@ -61,7 +61,7 @@ const MainHeader = () => {
         <Formik
           onSubmit={(values) => {
             patchUser(user.fields.id, values);
-            console.log(values, user);
+            location.reload();
           }}
           initialValues={{
             name: user.fields.name,
