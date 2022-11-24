@@ -5,28 +5,28 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { dummyUrl } from "./config/consts";
 import { track, init } from "@amplitude/analytics-browser";
 import { useLoadUser } from "./recoil/user/userActions";
 
 Modal.setAppElement("#root");
 
 const wind: any = window;
-wind.Telegram = {
-  WebApp: {
-    expand: () => {
-      return;
-    },
-    initDataUnsafe: {
-      user: {
-        username: "badavoo",
-        firstname: "Alex",
-        lastname: "Belov",
-        photoUrl: dummyUrl,
-      },
-    },
-  },
-};
+
+// wind.Telegram = {
+//   WebApp: {
+//     expand: () => {
+//       return;
+//     },
+//     initDataUnsafe: {
+//       user: {
+//         username: "badavoo",
+//         firstname: "Alex",
+//         lastname: "Belov",
+//         photoUrl: dummyUrl,
+//       },
+//     },
+//   },
+// };
 
 function App() {
   wind.Telegram.WebApp.expand();
